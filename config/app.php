@@ -135,15 +135,16 @@ return [
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
+		'Shift31\LaravelElasticsearch\ElasticsearchServiceProvider',
 
 		/*
 		 * Application Service Providers...
 		 */
-		'Todoparrot\Providers\AppServiceProvider',
-		'Todoparrot\Providers\BusServiceProvider',
-		'Todoparrot\Providers\ConfigServiceProvider',
-		'Todoparrot\Providers\EventServiceProvider',
-		'Todoparrot\Providers\RouteServiceProvider',
+		'LCast\Providers\AppServiceProvider',
+		'LCast\Providers\BusServiceProvider',
+		'LCast\Providers\ConfigServiceProvider',
+		'LCast\Providers\EventServiceProvider',
+		'LCast\Providers\RouteServiceProvider',
         'Collective\Html\HtmlServiceProvider',
 	],
 
@@ -193,8 +194,7 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
         'HTML' => 'Collective\Html\HtmlFacade',
-        'Form' => 'Collective\Html\FormFacade'
-
+        'Form' => 'Collective\Html\FormFacade',
 	],
 
 ];

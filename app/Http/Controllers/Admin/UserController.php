@@ -1,8 +1,8 @@
-<?php namespace Todoparrot\Http\Controllers\Admin;
+<?php namespace LCast\Http\Controllers\Admin;
 
-use Todoparrot\Http\Requests;
-use Todoparrot\Http\Controllers\Controller;
-use Todoparrot\User;
+use LCast\Http\Requests;
+use LCast\Http\Controllers\Controller;
+use LCast\User;
 
 use Illuminate\Http\Request;
 

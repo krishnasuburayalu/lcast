@@ -1,6 +1,6 @@
 <?php
 
-use Todoparrot\Todolist;
+use LCast\Todolist;
 
 class TodolistTest extends TestCase
 {
@@ -10,7 +10,7 @@ class TodolistTest extends TestCase
 
         $list = new Todolist;
 
-        $this->assertEquals(get_class($list), 'Todoparrot\Todolist');
+        $this->assertEquals(get_class($list), 'LCast\Todolist');
 
     }
 

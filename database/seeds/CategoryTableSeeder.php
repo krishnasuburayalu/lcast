@@ -1,4 +1,4 @@
-<?php namespace Todoparrot;    
+<?php namespace LCast;    
   
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;

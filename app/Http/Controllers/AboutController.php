@@ -1,8 +1,8 @@
-<?php namespace Todoparrot\Http\Controllers;
+<?php namespace LCast\Http\Controllers;
 
-use Todoparrot\Http\Requests;
-use Todoparrot\Http\Controllers\Controller;
-use Todoparrot\Http\Requests\ContactFormRequest;
+use LCast\Http\Requests;
+use LCast\Http\Controllers\Controller;
+use LCast\Http\Requests\ContactFormRequest;
 
 use Illuminate\Http\Request;
 

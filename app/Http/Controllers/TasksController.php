@@ -1,14 +1,14 @@
-<?php namespace Todoparrot\Http\Controllers;
+<?php namespace LCast\Http\Controllers;
 
-use Todoparrot\Http\Requests;
-use Todoparrot\Http\Controllers\Controller;
+use LCast\Http\Requests;
+use LCast\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use Todoparrot\Todolist;
-use Todoparrot\User;
-use Todoparrot\Task;
-use Todoparrot\Http\Requests\TaskCreateFormRequest;
+use LCast\Todolist;
+use LCast\User;
+use LCast\Task;
+use LCast\Http\Requests\TaskCreateFormRequest;
 
 class TasksController extends Controller {
 

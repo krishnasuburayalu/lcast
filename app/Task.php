@@ -1,4 +1,4 @@
-<?php namespace Todoparrot;
+<?php namespace LCast;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,7 +12,7 @@ class Task extends Model {
 	 */
 	public function Todolist()
 	{
-	  return $this->belongsTo('Todoparrot\Todolist');
+	  return $this->belongsTo('LCast\Todolist');
 	}
 
 }

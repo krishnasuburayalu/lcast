@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder {
 
 		DB::table('categories')->delete();
 
-		$this->call('Todoparrot\CategoryTableSeeder');
+		$this->call('LCast\CategoryTableSeeder');
 
 		// Seed the 
 

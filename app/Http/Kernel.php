@@ -1,4 +1,4 @@
-<?php namespace Todoparrot\Http;
+<?php namespace LCast\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -15,7 +15,7 @@ class Kernel extends HttpKernel {
 		'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
 		'Illuminate\Session\Middleware\StartSession',
 		'Illuminate\View\Middleware\ShareErrorsFromSession',
-		'Todoparrot\Http\Middleware\VerifyCsrfToken',
+		'LCast\Http\Middleware\VerifyCsrfToken',
 	];
 
 	/**
@@ -24,11 +24,11 @@ class Kernel extends HttpKernel {
 	 * @var array
 	 */
 	protected $routeMiddleware = [
-		'auth' => 'Todoparrot\Http\Middleware\Authenticate',
+		'auth' => 'LCast\Http\Middleware\Authenticate',
 		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
-		'guest' => 'Todoparrot\Http\Middleware\RedirectIfAuthenticated',
-		'listowner' => 'Todoparrot\Http\Middleware\ListOwnershipMiddleware',
-		'admin' => 'Todoparrot\Http\Middleware\AdminAuthentication',
+		'guest' => 'LCast\Http\Middleware\RedirectIfAuthenticated',
+		'listowner' => 'LCast\Http\Middleware\ListOwnershipMiddleware',
+		'admin' => 'LCast\Http\Middleware\AdminAuthentication',
 	];
 
 }

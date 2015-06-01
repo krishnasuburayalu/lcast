@@ -1,4 +1,4 @@
-<?php namespace Todoparrot\Providers;
+<?php namespace LCast\Providers;
 
 use Illuminate\Bus\Dispatcher;
 use Illuminate\Support\ServiceProvider;
@@ -16,7 +16,7 @@ class BusServiceProvider extends ServiceProvider {
 		$dispatcher->mapUsing(function($command)
 		{
 			return Dispatcher::simpleMapping(
-				$command, 'Todoparrot\Commands', 'Todoparrot\Handlers\Commands'
+				$command, 'LCast\Commands', 'LCast\Handlers\Commands'
 			);
 		});
 	}

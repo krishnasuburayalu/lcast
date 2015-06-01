@@ -1,4 +1,4 @@
-<?php namespace Todoparrot\Http\Controllers;
+<?php namespace LCast\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Routing\Controller as BaseController;

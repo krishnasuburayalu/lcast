@@ -1,4 +1,4 @@
-<?php namespace Todoparrot\Http\Controllers;
+<?php namespace LCast\Http\Controllers;
 
 class WelcomeController extends Controller {
 

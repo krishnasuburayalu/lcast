@@ -1,5 +1,5 @@
 suites:
     main:
-        namespace: Todoparrot
-        psr4_prefix: Todoparrot
+        namespace: LCast
+        psr4_prefix: LCast
         src_path: app

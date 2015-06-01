@@ -1,4 +1,4 @@
-<?php namespace Todoparrot;
+<?php namespace LCast;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,7 +27,7 @@ class Todolist extends Model {
     */
     public function user()
     {
-      return $this->belongsTo('Todoparrot\User');
+      return $this->belongsTo('LCast\User');
     }
 
     /**
@@ -36,7 +36,7 @@ class Todolist extends Model {
     */
     public function tasks()
     {
-    return $this->hasMany('Todoparrot\Task');
+    return $this->hasMany('LCast\Task');
     }
 
     /**
@@ -45,7 +45,7 @@ class Todolist extends Model {
      */
     public function Category()
     {
-      return $this->belongsTo('Todoparrot\Category');
+      return $this->belongsTo('LCast\Category');
     }
 
     /**

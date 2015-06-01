@@ -1,4 +1,4 @@
-<?php namespace Todoparrot\Events;
+<?php namespace LCast\Events;
 
 abstract class Event {
 

@@ -14,7 +14,8 @@
 Route::get('/', ['as' => 'home', 'uses' => 'WelcomeController@index']);
 
 //Route::get('home', 'HomeController@index');
-
+Route::get('welcome', 'ProducerController@index');
+Route::get('addindex', 'ProducerController@addIndex');
 Route::get('about', 'AboutController@index');
 
 Route::get('contact', 

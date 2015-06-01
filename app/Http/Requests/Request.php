@@ -1,4 +1,4 @@
-<?php namespace Todoparrot\Http\Requests;
+<?php namespace LCast\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

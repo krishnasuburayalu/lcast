@@ -1,6 +1,6 @@
-<?php namespace Todoparrot\Http\Controllers\Auth;
+<?php namespace LCast\Http\Controllers\Auth;
 
-use Todoparrot\Http\Controllers\Controller;
+use LCast\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;

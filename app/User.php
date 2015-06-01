@@ -1,4 +1,4 @@
-<?php namespace Todoparrot;
+<?php namespace LCast;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -6,7 +6,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-use Todoparrot\Todolist;
+use LCast\Todolist;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
@@ -39,7 +39,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	*/
 	public function lists()
 	{
-		return $this->hasMany('Todoparrot\Todolist');
+		return $this->hasMany('LCast\Todolist');
 	}
 
 	/**

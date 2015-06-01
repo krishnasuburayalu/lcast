@@ -1,4 +1,4 @@
-<?php namespace Todoparrot\Commands;
+<?php namespace LCast\Commands;
 
 abstract class Command {
 

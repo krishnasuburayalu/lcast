@@ -1,4 +1,4 @@
-<?php namespace Todoparrot\Providers;
+<?php namespace LCast\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

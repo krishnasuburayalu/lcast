@@ -1,4 +1,4 @@
-<?php namespace Todoparrot\Http\Middleware;
+<?php namespace LCast\Http\Middleware;
 
 use Closure;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;

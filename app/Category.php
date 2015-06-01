@@ -1,4 +1,4 @@
-<?php namespace Todoparrot;
+<?php namespace LCast;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,7 +12,7 @@ class Category extends Model {
     */
     public function lists()
     {
-    	return $this->hasMany('Todoparrot\Todolist');
+    	return $this->hasMany('LCast\Todolist');
     }
 
 }

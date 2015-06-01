@@ -1,6 +1,6 @@
-<?php namespace Todoparrot\Services;
+<?php namespace LCast\Services;
 
-use Todoparrot\User;
+use LCast\User;
 use Validator;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 

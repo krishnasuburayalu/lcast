@@ -1,6 +1,6 @@
-<?php namespace Todoparrot\Http\Requests;
+<?php namespace LCast\Http\Requests;
 
-use Todoparrot\Http\Requests\Request;
+use LCast\Http\Requests\Request;
 
 class ContactFormRequest extends Request {
 
