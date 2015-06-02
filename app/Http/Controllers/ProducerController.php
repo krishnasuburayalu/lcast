@@ -34,12 +34,18 @@ public function index()
     }
 
     public function addIndex(){
-        $params = array();
-        $params['body']  = array('testField' => 'abc');
-        $params['index'] = 'my_index';
-        $params['type']  = 'my_type';
-        $params['id']    = '1';
-        $ret = \Es::index($params);
+
+        $users =  \DB::table('userInfo')->skip(10)->take(100)->get();
+        foreach ($users as $user)
+        {
+            echo 'Indexing user: ' . $user->id .'\n'; 
+            $params = array();
+            $params['body']  = (array)$user;
+            $params['index'] = 'lcast';
+            $params['type']  = 'userinfo';
+            $params['id']    = $user->id;
+            $ret = \Es::index($params);
+        }
     }
  
 }
