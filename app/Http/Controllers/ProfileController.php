@@ -12,8 +12,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Pheanstalk\Pheanstalk;
 use Elasticsearch\Client;
 
-
 class ProfileController extends Controller {
+
 
     /**
      * Make sure the user is authenticated.
@@ -23,45 +23,152 @@ class ProfileController extends Controller {
     {
        
     }
+     /**
+     * landing controller routine
+     * 
+     */
     public function index()
     {
          $user = BCUser::find(5);
          dd($user);
     }
 
-    public function show($id)
+    /**
+     * Bulk indexing, start and end needs to be passed
+     * 
+     */
+     public function add_bulk()
     {
+        $response = array();
+        $start = \Input::get('start' , 0);
+        $end = \Input::get('end' , 1);
+        $size =    $end - $start;
+        $users = BCUser::take($size )->skip($start)->get();
+        $response['count'] = $users->count();
+        foreach($users as $user){
+            $user->albumes =  $user->albums()->get()->toArray();
+            $user->appearances =  $user->appearances()->get()->toArray();
+            $user->experiences =  $user->experiences()->get()->toArray();
+            $user->profile =  $user->profile()->get()->toArray();
+            $user->qualifications =  $user->qualifications()->get()->toArray();
+            //Push into queue
+            $this->push_into_queue($user->toArray());
+            $response['profile'][] = array('id' => $user->id, 'status' => 'success'); 
+        }
+         if($response['count']  <= 0 ){
+            return \Response::json(array(
+                'error' => true,
+                'response' => array('error' => true, 'message' => 'profile not found.')),
+                404
+            );
+        } 
+
+       return \Response::json(array(
+            'error' => false,
+            'response' => $response),
+            200
+        );
+    }
+    /**
+     * Indexing by profile id - mysql id
+     * 
+     */
+
+    public function add($id)
+    {
+        $response = array();
         $user = BCUser::find($id);
         $user->albumes =  $user->albums()->get()->toArray();
         $user->appearances =  $user->appearances()->get()->toArray();
         $user->experiences =  $user->experiences()->get()->toArray();
         $user->profile =  $user->profile()->get()->toArray();
         $user->qualifications =  $user->qualifications()->get()->toArray();
-
         //Push into queue
         $this->push_into_queue($user->toArray());
-        print_r( $user->toArray());
+        $response['profile'][] = array('id' => $user->id, 'status' => 'success'); 
+        if($user->count()  <= 0 ){
+            return \Response::json(array(
+                'error' => true,
+                'response' => array('error' => true, 'message' => 'profile not found.')),
+                404
+            );
+        } 
+
+       return \Response::json(array(
+            'error' => false,
+            'response' => $response),
+            200
+        );
     }
+    /**
+     * Get profile info from elasticsearch by profile id
+     * 
+     */
+
+    public function show($id)
+    {
+        $params = array();
+        $params['index'] = 'lcast';
+        $params['type']  = 'bench_cast';
+        $params['q']  = 'id:'.$id;
+        $params['_source']    = TRUE;
+        $results =\Es::search($params);
+        $count = array_get($results, 'hits.total', NULL);
+        if(!$count && $count <= 0 ){
+            return \Response::json(array(
+                'error' => true,
+                'response' => array('error' => true, 'message' => 'profile not found.')),
+                404
+            );
+        } 
+
+       return \Response::json(array(
+            'error' => false,
+            'response' => $results),
+            200
+        );
+    }
+
+    /**
+     * Search profiles by Query in the Lucene query string syntax
+     * 
+     */
+
+    public function search()
+    {
+        $q = \Input::get('q' , '');
+        $size = (int) \Input::get('size' , 10);
+        $skip = (int) \Input::get('skip' , 0);
+        //$all_fields = (bool) \Input::get('all_fields' , TRUE);
+        $fields = \Input::get('fields' , 'id,username');
+        $params = array();
+        $params['index'] = 'lcast';
+        $params['type']  = 'bench_cast';
+        //$params['_source'] = $all_fields;
+        $params['size']    = $size;
+        $params['from']    = $skip;
+        $params['_source_include'] =$fields;
+        $params['body']['query']['query_string']['query']  = $q;
+        $results =\Es::search($params);
+        $count = array_get($results, 'hits.total', 0);
+       if($count <= 0 ){
+            return \Response::json(array(
+                'error' => true,
+                'response' => array('error' => true, 'message' => 'profile not found.')),
+                404
+            );
+        }
+       return \Response::json(array(
+            'error' => false,
+            'response' => $results['hits']),
+            200
+        );
+    }
+
 
     public function push_into_queue($profile_params)
     {
         $this->dispatch(new QueueProfile($profile_params));
 
     }
-
-    public function addIndex(){
-
-        $users =  \DB::table('userInfo')->skip(10)->take(100)->get();
-        foreach ($users as $user)
-        {
-            echo 'Indexing user: ' . $user->id .'\n'; 
-            $params = array();
-            $params['body']  = (array)$user;
-            $params['index'] = 'lcast';
-            $params['type']  = 'userinfo';
-            $params['id']    = $user->id;
-            $ret = \Es::index($params);
-        }
-    }
- 
 }

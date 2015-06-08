@@ -136,6 +136,7 @@ return [
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Shift31\LaravelElasticsearch\ElasticsearchServiceProvider',
+		'Mmanos\Search\SearchServiceProvider',
 
 		/*
 		 * Application Service Providers...
@@ -195,6 +196,7 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
         'HTML' => 'Collective\Html\HtmlFacade',
         'Form' => 'Collective\Html\FormFacade',
+        'ElasticSearch' => 'Mmanos\Search\Facade',
 	],
 
 ];

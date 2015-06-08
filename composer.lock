@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d8ffa06365f90aead8622894b8de6d79",
+    "hash": "b835f9ca699243df034eb60764cc5059",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -934,6 +934,63 @@
                 "storage"
             ],
             "time": "2015-03-29 14:01:43"
+        },
+        {
+            "name": "mmanos/laravel-search",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mmanos/laravel-search.git",
+                "reference": "31aeb632b7c7453438351213cba4ea566bc38ff3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mmanos/laravel-search/zipball/31aeb632b7c7453438351213cba4ea566bc38ff3",
+                "reference": "31aeb632b7c7453438351213cba4ea566bc38ff3",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "algolia/algoliasearch-client-php": "1.1.*",
+                "elasticsearch/elasticsearch": "1.0.*@dev",
+                "zendframework/zendsearch": "dev-master"
+            },
+            "suggest": {
+                "algolia/algoliasearch-client-php": "Required for Algolia driver.",
+                "elasticsearch/elasticsearch": "Required for ElasticSearch driver.",
+                "zendframework/zendsearch": "Required for ZendSearch driver."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mmanos\\Search\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Manos",
+                    "email": "mark@airpac.com"
+                }
+            ],
+            "description": "A search package for Laravel 5.",
+            "keywords": [
+                "algolia",
+                "elasticsearch",
+                "full",
+                "laravel",
+                "lucene",
+                "search",
+                "text",
+                "zendsearch"
+            ],
+            "time": "2015-04-14 00:15:54"
         },
         {
             "name": "monolog/monolog",
