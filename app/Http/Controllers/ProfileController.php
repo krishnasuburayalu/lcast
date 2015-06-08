@@ -110,18 +110,9 @@ class ProfileController extends Controller {
         $params = array();
         $params['index'] = 'lcast';
         $params['type']  = 'bench_cast';
-        $params['q']  = 'id:'.$id;
+        $params['id']  = $id;
         $params['_source']    = TRUE;
-        $results =\Es::search($params);
-        $count = array_get($results, 'hits.total', NULL);
-        if(!$count && $count <= 0 ){
-            return \Response::json(array(
-                'error' => true,
-                'response' => array('error' => true, 'message' => 'profile not found.')),
-                404
-            );
-        } 
-
+        $results =\Es::get($params);
        return \Response::json(array(
             'error' => false,
             'response' => $results),
@@ -139,15 +130,17 @@ class ProfileController extends Controller {
         $q = \Input::get('q' , '');
         $size = (int) \Input::get('size' , 10);
         $skip = (int) \Input::get('skip' , 0);
-        //$all_fields = (bool) \Input::get('all_fields' , TRUE);
-        $fields = \Input::get('fields' , 'id,username');
+        $fields = \Input::get('fields' , '');
         $params = array();
         $params['index'] = 'lcast';
         $params['type']  = 'bench_cast';
-        //$params['_source'] = $all_fields;
+        if($fields == ''){
+           $params['_source'] = TRUE;
+        }else{
+           $params['_source_include'] =$fields;
+        }
         $params['size']    = $size;
         $params['from']    = $skip;
-        $params['_source_include'] =$fields;
         $params['body']['query']['query_string']['query']  = $q;
         $results =\Es::search($params);
         $count = array_get($results, 'hits.total', 0);
@@ -163,6 +156,54 @@ class ProfileController extends Controller {
             'response' => $results['hits']),
             200
         );
+    }
+
+    /**
+     * Get profile info from elasticsearch by profile id
+     * 
+     */
+
+    public function delete($id)
+    {
+        $params = array();
+        $params['index'] = 'lcast';
+        $params['type']  = 'bench_cast';
+        $params['id']  = $id;
+        $results =\Es::delete($params);
+        return \Response::json(array(
+            'error' => false,
+            'response' => $results),
+            200
+        );
+    }
+    public function facets()
+    {
+        $q = \Input::get('q' , '');
+        $size = (int) \Input::get('size' , 10);
+        $skip = (int) \Input::get('skip' , 0);
+        $field = \Input::get('field' , 'created_date');
+        $params = array();
+        $params['index'] = 'lcast';
+        $params['type']  = 'bench_cast';
+        $params['size']    = $size;
+        $params['from']    = $skip;
+        $params['body']['query']['query_string']['query']  = $q;
+        $params['body']['facets']['facets']['terms']['field']  = $field;
+        $results =\Es::search($params);
+        $count = array_get($results, 'hits.total', 0);
+       if($count <= 0 ){
+            return \Response::json(array(
+                'error' => true,
+                'response' => array('error' => true, 'message' => 'profile not found.')),
+                404
+            );
+        }
+       return \Response::json(array(
+            'error' => false,
+            'response' => $results['hits']),
+            200
+        ); 
+
     }
 
 

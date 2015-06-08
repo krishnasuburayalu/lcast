@@ -42,12 +42,15 @@ Route::controllers([
 ]);
 
 //LCAST URL Params
-Route::get('profile/add/{id}', 'ProfileController@add');
 Route::get('profile/bulk', 'ProfileController@add_bulk');
-Route::post('profile/update/{id}', 'ProfileController@update');
-Route::delete('profile/delete/{id}', 'ProfileController@delete');
+Route::get('profile/add/{id}', 'ProfileController@add');
+Route::get('profile/update/{id}', 'ProfileController@update');
+Route::get('profile/delete/{id}', 'ProfileController@delete');
+Route::get('profile/search', 'ProfileController@search');
+Route::get('profile/facets', 'ProfileController@facets');
+Route::get('profile/show/{id}', 'ProfileController@show');
 Route::get('profile/{id}/album/new', 'ProfileController@add_new_album');
 Route::get('profile/{id}/album/{album_id}', 'ProfileController@show_album');
-Route::get('profile/search', 'ProfileController@search');
-Route::get('profile/{id}', 'ProfileController@show');
+
+
 
