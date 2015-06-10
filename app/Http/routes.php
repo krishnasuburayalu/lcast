@@ -45,12 +45,13 @@ Route::controllers([
 Route::get('profile/bulk', 'ProfileController@add_bulk');
 Route::get('profile/add/{id}', 'ProfileController@add');
 Route::get('profile/update/{id}', 'ProfileController@update');
+Route::get('profile/show/{id}', 'ProfileController@show');
 Route::get('profile/delete/{id}', 'ProfileController@delete');
 Route::get('profile/search', 'ProfileController@search');
 Route::get('profile/facets', 'ProfileController@facets');
-Route::get('profile/show/{id}', 'ProfileController@show');
-Route::get('profile/{id}/album/new', 'ProfileController@add_new_album');
-Route::get('profile/{id}/album/{album_id}', 'ProfileController@show_album');
+
+//Route::get('profile/{id}/album/new', 'ProfileController@add_new_album');
+//Route::get('profile/{id}/album/{album_id}', 'ProfileController@show_album');
 
 
 

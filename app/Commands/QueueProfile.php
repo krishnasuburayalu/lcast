@@ -7,21 +7,22 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldBeQueued;
 use Elasticsearch\Client;
+use LCast\ProfileHelper;
 
 class QueueProfile extends Command implements SelfHandling, ShouldBeQueued {
 
 	use InteractsWithQueue, SerializesModels;
 
-	protected $profile;
+	protected $message;
 
 	/**
 	 * Create a new command instance.
 	 *
 	 * @return void
 	 */
-	public function __construct($profile)
+	public function __construct($message)
 	{
-		$this->profile = $profile;//
+		$this->message = $message;
 	}
 
 	/**
@@ -31,14 +32,23 @@ class QueueProfile extends Command implements SelfHandling, ShouldBeQueued {
 	 */
 	public function handle()
 	{
-	    echo 'Indexing user: ' . $this->profile['id'] .'\n'; 
-            $params = array();
-            $params['body']  = (array)$this->profile;
-            $params['index'] = 'lcast';
-            $params['type']  = 'bench_cast';
-            $params['id']    = $this->profile['id'];
-            $ret = \Es::index($params);
-	    return true;
+		$action  = array_get($this->message, 'action', ProfileHelper::QUEUE_METHOD_GET);
+		$data  = array_get($this->message, 'data', NULL);
+		switch($action){
+			case ProfileHelper::QUEUE_METHOD_POST:
+				ProfileHelper::update_profile($data);
+			break;
+			case ProfileHelper::QUEUE_METHOD_PUT:
+				ProfileHelper::add_profile($data);
+			break;
+			case ProfileHelper::QUEUE_METHOD_DELETE:
+				ProfileHelper::delete_profile($data);
+			break;
+			default:
+				ProfileHelper::get_profile($data);
+			return true;
+		}
+		return true;
 	}
 
 }

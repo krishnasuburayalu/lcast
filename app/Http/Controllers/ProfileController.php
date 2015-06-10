@@ -11,17 +11,16 @@ use LCast\Commands\QueueProfile;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Pheanstalk\Pheanstalk;
 use Elasticsearch\Client;
+use LCast\ProfileHelper;
 
 class ProfileController extends Controller {
-
-
     /**
      * Make sure the user is authenticated.
      * 
      */
     public function __construct()
     {
-       
+
     }
      /**
      * landing controller routine
@@ -52,7 +51,9 @@ class ProfileController extends Controller {
             $user->profile =  $user->profile()->get()->toArray();
             $user->qualifications =  $user->qualifications()->get()->toArray();
             //Push into queue
-            $this->push_into_queue($user->toArray());
+            $queue_message['action'] = ProfileHelper::QUEUE_METHOD_PUT;
+            $queue_message['data'] = $user->toArray();
+            $this->push_into_queue($queue_message);
             $response['profile'][] = array('id' => $user->id, 'status' => 'success'); 
         }
          if($response['count']  <= 0 ){
@@ -61,8 +62,7 @@ class ProfileController extends Controller {
                 'response' => array('error' => true, 'message' => 'profile not found.')),
                 404
             );
-        } 
-
+        }
        return \Response::json(array(
             'error' => false,
             'response' => $response),
@@ -84,7 +84,9 @@ class ProfileController extends Controller {
         $user->profile =  $user->profile()->get()->toArray();
         $user->qualifications =  $user->qualifications()->get()->toArray();
         //Push into queue
-        $this->push_into_queue($user->toArray());
+        $queue_message['action'] = ProfileHelper::QUEUE_METHOD_PUT;
+        $queue_message['data'] = $user->toArray();
+        $this->push_into_queue($queue_message);
         $response['profile'][] = array('id' => $user->id, 'status' => 'success'); 
         if($user->count()  <= 0 ){
             return \Response::json(array(
@@ -92,8 +94,7 @@ class ProfileController extends Controller {
                 'response' => array('error' => true, 'message' => 'profile not found.')),
                 404
             );
-        } 
-
+        }
        return \Response::json(array(
             'error' => false,
             'response' => $response),
@@ -105,15 +106,42 @@ class ProfileController extends Controller {
      * 
      */
 
+    public function update($id)
+    {
+        $params = ProfileHelper::get_elastic_config();
+        $params['id']  = $id;
+        $is_exists =\Es::exists($params);
+        if(!$is_exists){
+             return \Response::json(array(
+            'error' => true,
+            'response' => $is_exists),
+            404
+            );
+        }
+        $input = json_decode(\Input::get('data', '{}'), TRUE);
+        $queue_message['action'] = ProfileHelper::QUEUE_METHOD_POST;
+        $queue_message['data'] = array('id' => $id, 'body' => $input);
+        $this->push_into_queue($queue_message);
+        return \Response::json( ProfileHelper::get_success_response(),
+            200
+        );
+    }
+
     public function show($id)
     {
-        $params = array();
-        $params['index'] = 'lcast';
-        $params['type']  = 'bench_cast';
+        $params = ProfileHelper::get_elastic_config();
         $params['id']  = $id;
+        $is_exists =\Es::exists($params);
+        if(!$is_exists){
+             return \Response::json(array(
+            'error' => true,
+            'response' => $is_exists),
+            404
+            );
+        }
         $params['_source']    = TRUE;
         $results =\Es::get($params);
-       return \Response::json(array(
+        return \Response::json(array(
             'error' => false,
             'response' => $results),
             200
@@ -131,9 +159,7 @@ class ProfileController extends Controller {
         $size = (int) \Input::get('size' , 10);
         $skip = (int) \Input::get('skip' , 0);
         $fields = \Input::get('fields' , '');
-        $params = array();
-        $params['index'] = 'lcast';
-        $params['type']  = 'bench_cast';
+        $params = ProfileHelper::get_elastic_config();
         if($fields == ''){
            $params['_source'] = TRUE;
         }else{
@@ -144,14 +170,14 @@ class ProfileController extends Controller {
         $params['body']['query']['query_string']['query']  = $q;
         $results =\Es::search($params);
         $count = array_get($results, 'hits.total', 0);
-       if($count <= 0 ){
+        if($count <= 0 ){
             return \Response::json(array(
                 'error' => true,
                 'response' => array('error' => true, 'message' => 'profile not found.')),
                 404
             );
         }
-       return \Response::json(array(
+        return \Response::json(array(
             'error' => false,
             'response' => $results['hits']),
             200
@@ -159,23 +185,21 @@ class ProfileController extends Controller {
     }
 
     /**
-     * Get profile info from elasticsearch by profile id
+     * delete profile info from elasticsearch by profile id
      * 
      */
 
     public function delete($id)
     {
-        $params = array();
-        $params['index'] = 'lcast';
-        $params['type']  = 'bench_cast';
-        $params['id']  = $id;
-        $results =\Es::delete($params);
-        return \Response::json(array(
-            'error' => false,
-            'response' => $results),
+        $queue_message['action'] = ProfileHelper::QUEUE_METHOD_DELETE;
+        $queue_message['data'] = array('id' => $id);
+        $this->push_into_queue($queue_message);
+        return \Response::json( ProfileHelper::get_success_response(),
             200
         );
     }
+
+
     public function facets()
     {
         $q = \Input::get('q' , '');
