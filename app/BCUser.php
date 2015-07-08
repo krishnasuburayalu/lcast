@@ -22,7 +22,7 @@ class BCUser extends Model {
     */
     public function appearances()
     {
-    	return $this->hasMany('LCast\Appearance', 'user_id','username');
+    	return $this->hasOne('LCast\Appearance', 'user_id','username');
     }
 
     /**

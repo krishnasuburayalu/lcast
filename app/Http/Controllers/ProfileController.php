@@ -42,14 +42,14 @@ class ProfileController extends Controller {
         $start = \Input::get('start' , 0);
         $end = \Input::get('end' , 1);
         $size =    $end - $start;
-        $users = BCUser::take($size )->skip($start)->get();
+        $users = BCUser::take($size)->skip($start)->get();
         $response['count'] = $users->count();
         foreach($users as $user){
-            $user->albumes =  $user->albums()->get()->toArray();
-            $user->appearances =  $user->appearances()->get()->toArray();
-            $user->experiences =  $user->experiences()->get()->toArray();
-            $user->profile =  $user->profile()->get()->toArray();
-            $user->qualifications =  $user->qualifications()->get()->toArray();
+              $user->albumes =  $user->albums()->get(['type','title','source','description','status'])->toArray();
+            $user->appearances =  $user->appearances()->get(['user_age','height_cm','height_feet','weight_kg','weight_pound','built','hair_style','hair_color','skin_color','eye_color'])->toArray();
+            $user->experiences =  $user->experiences()->get(['type','role','title','from_date','to_date','description'])->toArray();
+            $user->profile =  $user->profile()->get(['name','gender','dob','language','state','country','capability','avatar','about_me'])->toArray();
+            $user->qualifications =  $user->qualifications()->get(['type','title','from_date','to_date','description'])->toArray();
             //Push into queue
             $queue_message['action'] = ProfileHelper::QUEUE_METHOD_PUT;
             $queue_message['data'] = $user->toArray();
@@ -78,11 +78,11 @@ class ProfileController extends Controller {
     {
         $response = array();
         $user = BCUser::find($id);
-        $user->albumes =  $user->albums()->get()->toArray();
-        $user->appearances =  $user->appearances()->get()->toArray();
-        $user->experiences =  $user->experiences()->get()->toArray();
-        $user->profile =  $user->profile()->get()->toArray();
-        $user->qualifications =  $user->qualifications()->get()->toArray();
+        $user->albumes =  $user->albums()->get(['type','title','source','description','status'])->toArray();
+        $user->appearances =  $user->appearances()->get(['user_age','height_cm','height_feet','weight_kg','weight_pound','built','hair_style','hair_color','skin_color','eye_color'])->toArray();
+        $user->experiences =  $user->experiences()->get(['type','role','title','from_date','to_date','description'])->toArray();
+        $user->profile =  $user->profile()->get(['name','gender','dob','language','state','country','capability','avatar','about_me'])->toArray();
+        $user->qualifications =  $user->qualifications()->get(['type','title','from_date','to_date','description'])->toArray();
         //Push into queue
         $queue_message['action'] = ProfileHelper::QUEUE_METHOD_PUT;
         $queue_message['data'] = $user->toArray();
@@ -129,6 +129,8 @@ class ProfileController extends Controller {
 
     public function show($id)
     {
+        //ProfileHelper::delete_index();
+        //ProfileHelper::add_index();exit;
         $params = ProfileHelper::get_elastic_config();
         $params['id']  = $id;
         $is_exists =\Es::exists($params);
@@ -211,8 +213,9 @@ class ProfileController extends Controller {
         $params['type']  = 'bench_cast';
         $params['size']    = $size;
         $params['from']    = $skip;
-        $params['body']['query']['query_string']['query']  = $q;
-        $params['body']['facets']['facets']['terms']['field']  = $field;
+
+        $facet = '{"query":{"query_string":{"query":"'.$q.'"}},"facets":{"tags":{"terms":{"field":"'.$field.'"}}}}';
+        $params['body']=$facet;
         $results =\Es::search($params);
         $count = array_get($results, 'hits.total', 0);
        if($count <= 0 ){
@@ -224,7 +227,7 @@ class ProfileController extends Controller {
         }
        return \Response::json(array(
             'error' => false,
-            'response' => $results['hits']),
+            'response' => $results['facets']),
             200
         ); 
 

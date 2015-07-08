@@ -34,19 +34,21 @@ class QueueProfile extends Command implements SelfHandling, ShouldBeQueued {
 	{
 		$action  = array_get($this->message, 'action', ProfileHelper::QUEUE_METHOD_GET);
 		$data  = array_get($this->message, 'data', NULL);
-		switch($action){
-			case ProfileHelper::QUEUE_METHOD_POST:
-				ProfileHelper::update_profile($data);
-			break;
-			case ProfileHelper::QUEUE_METHOD_PUT:
-				ProfileHelper::add_profile($data);
-			break;
-			case ProfileHelper::QUEUE_METHOD_DELETE:
-				ProfileHelper::delete_profile($data);
-			break;
-			default:
-				ProfileHelper::get_profile($data);
-			return true;
+		if($data){
+			switch($action){
+				case ProfileHelper::QUEUE_METHOD_POST:
+					ProfileHelper::update_profile($data);
+				break;
+				case ProfileHelper::QUEUE_METHOD_PUT:
+					ProfileHelper::add_profile($data);
+				break;
+				case ProfileHelper::QUEUE_METHOD_DELETE:
+					ProfileHelper::delete_profile($data);
+				break;
+				default:
+					ProfileHelper::get_profile($data);
+				return true;
+			}
 		}
 		return true;
 	}
