@@ -1,41 +1,41 @@
-@extends('layouts.master')
+<html>
+  <head>
+    <link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
 
-@section('content')
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        color: #000000;
+        display: table;
+        font-weight: 100;
+        font-family: 'Lato';
+      }
 
-<div class="row">
-  <div class="col-md-12" style="text-align: center; padding-top: 30%; color: #fff;">
-    <h1>Welcome to TODOParrot</h1>
-    <p>
-    Yes we're another TODO list startup, but with tropical theming!
-    </p>
+      .container {
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+      }
 
-    @if (! Auth::check())
-      <a href="/auth/register" class="btn btn-primary">Create an account</a>
-    @else
-      <a href="{{ URL::route('lists.index') }}" class="btn btn-primary">View Your Lists</a>
-    @endif
+      .content {
+        text-align: center;
+        display: inline-block;
+      }
 
-    <p id="list_count">
-
-    </p>
-
-  </div>
-</div>
-
-    @section('footer_js')
-    <script>
-      $.ajax({
-        url: "http://status.todoparrot.com/lists/count",
-        dataType: 'jsonp',
-        crossDomain: true,
-        success: function(data) {
-          $('#list_count').html(data.count + " lists created!");
-        },
-        error: function(data) {
-          $('#list_count').html('Squawk!');
-        }
-      });
-    </script>
-    @endsection
-
-@endsection
+      .title {
+        font-size: 72px;
+        margin-bottom: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="content">
+        <div class="title">Access Denied/Forbidden</div>
+      </div>
+    </div>
+  </body>
+</html>
