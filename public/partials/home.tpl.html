@@ -1,0 +1,16 @@
+<div class="row">
+ <div class="col-md-6">
+<div style="margin-bottom: 0!important;" class="callout callout-default"><h4><i class="fa fa-search"></i>Showing  {{stNum}} - {{endNum}} of {{ total }}  In-Network Doctors   </h4>  
+</div></div>
+ 
+ <div class="col-md-6">
+<ul class="pagination pagination-sm inline pull-right">
+<li><a href="#/compare/{{selectionBID | arrayToString}}">Compare <i class="fa fa-files-o"></i></a></li>
+<li ng-repeat="i in Range(stPGNum, endPGNum)"><a href="#/search/{{i}}">{{i}}</a></li>
+</ul></div></div>
+ <div class="row">   <div class="col-md-4" ng-repeat="provider in providers"><div class="box box-widget widget-user-2 box-solid"><!-- Add the bg color to the header using any of the bg-* classes --><div class="widget-user-header dhf-widget-user-header bg-light-blue-active">  <div class="widget-user-image" ng-switch="provider._source.male"><img ng-switch-when="true" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/male.jpg" class="img-circle"/> <img ng-switch-when="false" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/female.jpg" class="img-circle"/>  </div><!-- /.widget-user-image -->  <h4 class="fixed-username dhf-user"><a href="#profile/{{ provider._source.bid }}"><strong>{{ provider._source.lastname }}</strong>, {{ provider._source.firstname }} {{ provider._source.mi }} , {{ provider._source.degree }}</a></h4>  <p class="widget-user-desc" ng-switch on="provider._source.firstnam"></p>  <p class=""> Joining OMNIA HSA on 1/1/2016</p>  <p class="">Spacilty</p><p> <img alt="" ng-if="provider._source.omt1" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tier-one.png" typeof="foaf:Image"/><img alt="" ng-if="provider._source.omt2" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tiertwo.png" typeof="foaf:Image"/></p></div><div class="box-body">  <strong>  <i class="fa fa-phone margin-r-5"></i>Phone</strong><p class="">{{ provider._source.phone }}</p> <strong><i class="fa fa-map-marker margin-r-5"></i>Location</strong><p class=" dhf-addrs">{{ provider._source.address1 }}, {{ provider._source.city }}, {{ provider._source.state }} - {{ provider._source.zip }}-{{ provider._source.zip4 }}</p> <strong><i class="fa fa-car margin-r-5"></i>Distance</strong><p class="">1.9 Miles Away</p></div><div class="box-footer"> 
+ 
+<input id="{{ provider._source.bid}}" class="" type="checkbox" value="{{provider._source.bid}}" ng-checked="selection.indexOf(provider._source.bid) > -1" ng-click="toggleSelection(provider._source.bid)" />
+<label> Compare</label>
+ 
+ <a class="small-box-footer btn bg-light-blue-active btn-flat pull-right" href="#profile/{{page}}/{{ provider._source.bid }}">  View Profile <i class="fa fa-arrow-circle-right"></i></a></div></div></div><!-- /.box --></div></div>

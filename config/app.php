@@ -137,6 +137,7 @@ return [
 		'Illuminate\View\ViewServiceProvider',
 		'Shift31\LaravelElasticsearch\ElasticsearchServiceProvider',
 		'Mmanos\Search\SearchServiceProvider',
+		'Maatwebsite\Excel\ExcelServiceProvider',
 
 		/*
 		 * Application Service Providers...
@@ -197,6 +198,7 @@ return [
         'HTML' => 'Collective\Html\HtmlFacade',
         'Form' => 'Collective\Html\FormFacade',
         'ElasticSearch' => 'Mmanos\Search\Facade',
+        'Excel' => 'Maatwebsite\Excel\Facades\Excel',
 	],
 
 ];

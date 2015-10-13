@@ -16,7 +16,7 @@ return [
 	|
 	*/
 
-	'default' => env('QUEUE_DRIVER', 'beanstalkd'),
+	'default' => env('QUEUE_DRIVER', 'sync'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -45,7 +45,7 @@ return [
 		'beanstalkd' => [
 			'driver' => 'beanstalkd',
 			'host'   => 'localhost',
-			'queue'  => 'lcast',
+			'queue'  => 'dde',
 			'ttr'    => 60,
 		],
 
