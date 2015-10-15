@@ -157,7 +157,7 @@ class ProfileController extends Controller
         $type = \Input::get('type', 'D');
         $size = (int)\Input::get('size', 10);
         $skip = (int)\Input::get('skip', 0);
-        $fields = \Input::get('fields', 'bid,type,network,firstname,lastname,name,phone,county,city,address1,address2,state,zip,zip4,phone,degree,language,mi,state,gender,omt1,omt2,specialties');
+        $fields = \Input::get('fields', 'bid,type,network,firstname,lastname,name,phone,county,city,address1,address2,state,zip,zip4,phone,degree,language,mi,state,gender,omt1,omt2,specialties,location');
         $zip = \Input::get('zip', 0);
         $radius = (int)\Input::get('radius', 10);
         $params = ProfileHelper::get_elastic_config();
@@ -170,6 +170,7 @@ class ProfileController extends Controller
         $filter = array();
         $params['size'] = $size;
         $params['from'] = $skip;
+        $params['body']['sort'] = array('name_raw' => array("order" => "asc"));
         if ($zip != 0) {
             $filter['and'] = array();
             $zip_cordinates = GeoHelper::get_geocode($zip, TRUE);
@@ -177,11 +178,21 @@ class ProfileController extends Controller
             $filter['and'][] = $geofilter;
         }
         $params['body']['query']['filtered']["filter"] = $filter;
-        $params['body']['query']['filtered']["query"]['bool']['must'] = ProfileHelper::build_filters();;
-        
+        $params['body']['query']['filtered']["query"]['bool']['must'] = ProfileHelper::build_filters();
         //print_r($params['body']);exit;
         $results = \Es::search($params);
         $count = array_get($results, 'hits.total', 0);
+        $newresults = array();
+        if ($zip != 0 && $count > 0) {
+            foreach ($results['hits']['hits'] as $result) {
+                $zip_cordinates = GeoHelper::get_geocode($zip);
+                $result['_source']['distance'] =  ProfileHelper::distance($zip_cordinates['location']['lat'], $zip_cordinates['location']['lon'], $result['_source']['location']['lat'], $result['_source']['location']['lon']);
+                $result['_source']['distance'] = (float) number_format($result['_source']['distance'], 2, '.', '');
+                $newresults[] = $result;
+            }
+            $results['hits']['hits'] = $newresults;
+        }
+        
         if ($count <= 0) {
             return \Response::json(array('error' => true, 'response' => array('error' => true, 'message' => 'profile not found.'), 'query' => $params), 200);
         }
