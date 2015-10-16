@@ -466,6 +466,7 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
         if (id != undefined) {
             $scope.profile_id = id
         }
+        $scope.showModal = true;
         $http.get('/profile/show/' + $scope.profile_id).
         success(function(data, status) {
             $scope.error = data.error;
@@ -477,6 +478,7 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
             $scope.data = data || "Request failed";
             $scope.status = status;
             $scope.error = true;
+            $scope.showModal = false;
         });
     };
     $scope.closeModule =  function(){

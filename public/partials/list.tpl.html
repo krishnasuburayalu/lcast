@@ -112,6 +112,15 @@
                       </td>
                     </tr>
                     <tr>
+                      <th>Tier Status</th>
+                      <td ng-repeat="provider in compareProviders">  
+                        <img class="text-center" ng-if="provider._source.omt1" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tier-one.png" typeof="foaf:Image" />
+                        <img class="text-center" ng-if="provider._source.omt2" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tiertwo.png" typeof="foaf:Image" /></ </td>
+
+                    </tr>
+
+
+                    <tr>
                       <th>Spacilty</th>
                       <td ng-repeat="provider in compareProviders">{{ provider._source.specialties.join(", ")}}</td>
 
@@ -163,13 +172,10 @@
                     </tr>
                   </tbody></table>
                 </div><!-- /.box-body -->
-               
-                 
-             
  </div>
 </div>
 </div>
-
+</div>
 <div class="modal" ak-modal="showModal">
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
