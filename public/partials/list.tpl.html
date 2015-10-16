@@ -1,315 +1,326 @@
 <div class="col-md-12">
     <div class="row">
-        <div class="col-md-3" ng-if="total != 0">
-            <div id="accordion" class="box-group">
-                <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
-                <div class="panel box box-default box-solid">
-                    <div class="box-header with-border">
-                        <h4 class="box-title">
-                        <a   data-parent="#accordion" data-toggle="collapse" class="" aria-expanded="true">
-                        Refine your Search
-                        </a>
-                        </h4>
+        <div class="col-md-12 error-page" ng-if="total == 0">
+            <h3> Your search  did not match any documents.</h3>
+            <H5>Did you mean? </h5>
+            <ul class="list-unstyled">
+                <li ng-repeat="suggest in suggestion">
+                <a href="#"><b>{{suggest.text}}</b></a></li>
+            </ul>
+        </div>
+        <div class="col-md-12" ng-if="total != 0">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <span>Refined by : </span>
+                    <span class="label label-default" ng-if="name">Name : {{name}}</span>
+                    <span class="label label-default" ng-if="location">Zip : {{location}} {{req.radius}}</span>
+                    <span class="label label-default" ng-if="req.gender">Gender : {{req.gender}}</span>
+                    <span class="label label-default" ng-if="specialty_sel">Specialty: {{specialty_sel}} </span>
+                    <span class="label label-default" ng-if="req.network">Network : {{req.network}}</span>
+                    <span class="label label-default" ng-if="req.Language">Language : {{req.language}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                <ul class=" pagination pagination-sm">
+                    <li>
+                      <a href="#">Showing <b>{{total}}</b>  In-Network Doctors
+                       </a>
+                    </li>
+                     <li><a href="" clas="bg-light-blue-active" ng-click="compareProfile(selectionBID)" ><i class="fa fa-files-o"></i> Compare {{selectionBID.size()}} Doctors</a>
+                     </li>
+                  </ul>
+                </div>
+                <div class="col-md-7">
+                <paging
+                page="page"
+                page-size="12"
+                total="total"
+                ul-class="pagination pagination-sm pull-right"
+                show-prev-next="true"
+                paging-action="doSearch(page)">
+                </paging>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3" ng-repeat="provider in providers">
+                <div class="box box-widget widget-user-2 box-solid">
+                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="widget-user-header dhf-widget-user-header bg-light-blue-active">
+                        <div class="widget-user-image" ng-switch="provider._source.gender">
+                            <img ng-switch-when="male" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/male.jpg" class="img-circle" />
+                        <img ng-switch-when="female" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/female.jpg" class="img-circle" /> </div>
+                        <!-- /.widget-user-image -->
+                        <h4 class="fixed-username dhf-user"><a href=" " ng-click="showProfile(provider._source.bid)">{{ provider._source.name }}, {{ provider._source.degree }}</a></h4>
+                        <p class="widget-user-desc">{{ provider._source.specialties.join(", ")}}</p>
+                        <p class="widget-user-desc">
+                        <img class="pull-right" ng-if="provider._source.omt1" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tier-one.png" typeof="foaf:Image" />
+                        <img class="pull-right" ng-if="provider._source.omt2" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tiertwo.png" typeof="foaf:Image" /></p>
                     </div>
-                    <div class="panel-collapse collapse in" id="collapseTwo" aria-expanded="true" style="">
-                        <div class="box-body">
-                        <h4 class="box-title"><i class="fa fa-plus-square"></i> Plans</h4>
-                                <select class="form-control select2" style="width: 100%;" ng-model="req.network" ng-options="plan.val as plan.name for plan in plans" ng-change="doSearch(1)">
-                                </select>
-                                  <hr/>
-                            <h4 class="box-title"><i class="fa fa-group"></i> Gender</h4>
-                            <ul class="list-unstyled">
-                                <li class="text-light-blue" ng-repeat="gen in aggregations.gender">
-                                    <input type="radio" ng-model="req.gender" ng-change="doSearch(1)" value="{{gen.term}} "/> {{gen.term}}  <a class="pull-right badge bg-light-blue">{{gen.count}}</a>
-                                </li>
-                            </ul>
-                            <hr/>
-                             <h4 class="box-title"><i class="fa  fa-car"></i>  Distance</h4>
-                                <ul class="list-unstyled">
-                                    <li class="text-light-blue" ng-repeat="dist in distsnce">
-                                        <input type="radio" ng-model="req.radius" value="{{dist.val}}" ng-change="doSearch(1)"> {{dist.name}}
-                                    </li>
-                                </ul>
-                                    <hr/>
-                            <!--h4 class="box-title"><i class="fa  fa-stethoscope"></i>  Network</h4>
-                            <ul class="list-unstyled">
-                                <li class="text-light-blue" ng-repeat="agr in aggregations.network">
-                                    <input type="checkbox" checklist-model="req.network" /> {{agr.term}} <a class="pull-right badge bg-light-blue">{{agr.count}}</a>
-                                </li>
-                            </ul>
-                            <hr/-->
-                            <h4 class="box-title"><i class="fa  fa-user-md"></i> Specialty</h4>
-                            <ul class="list-unstyled">
-                                <li class="text-light-blue" ng-repeat="spc in aggregations.specialties">
-                                    <input type="checkbox" checklist-model="req.specialties" /> {{spc.term}} <a class="pull-right badge bg-light-blue">{{spc.count}}</a>
-                                </li>
-                            </ul>
-                            <hr/>
-                            <hr/>
-                            <h4 class="box-title"><i class="fa  fa-language"></i> Language</h4>
-                            <ul class="list-unstyled">
-                                <li class="text-light-blue" ng-repeat="lan in aggregations.language">
-                                    <input type="checkbox" checklist-model="req.language" /> {{lan.term}} <a class="pull-right  badge bg-light-blue">{{lan.count}}</a>
-                                </li>
-                            </ul>
-                            <hr/>
-                            <!---h4 class="box-title">Group</h4>
-                                                        <ul class="list-unstyled">
-                                                                <li class="text-light-blue" ng-repeat="agr in aggregations.group_name">
-                                                                        <input type="checkbox" checklist-model="req.group_name" /> {{agr.term}} <a class="pull-right badge bg-light-blue">{{agr.count}}</a>
-                                                                </li>
-                                                        </ul>
-                            <hr/-->
-
-                            <h4 class="box-title"><i class="fa  fa-map-marker"></i> County</h4>
-                            <ul class="list-unstyled">
-                                <li class="text-light-blue" ng-repeat="agr in aggregations.county">
-                                    <input type="checkbox" checklist-model="req.county" /> {{agr.term}} <a class="pull-right badge bg-light-blue">{{agr.count}}</a>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="box-body"> <strong>  <i class="fa fa-phone margin-r-5"></i>Phone</strong>
+                        <p class="">{{ provider._source.phone }}</p> <strong><i class="fa fa-map-marker margin-r-5"></i>Location</strong>
+                        <p class=" dhf-addrs">{{ provider._source.address1 }} <br/> {{ provider._source.city }}, {{ provider._source.state }} <br/> {{ provider._source.zip }}-{{ provider._source.zip4 }}</p> <strong ng-if="provider._source.distance"><i class="fa fa-car margin-r-5"></i>Distance</strong>
+                        <p class="" ng-if="provider._source.distance">{{ provider._source.distance }} Miles Away</p>
+                        <p>
+                        <input id="{{ provider._source.bid}}" class="" type="checkbox" value="{{provider._source.bid}}" ng-checked="selection.indexOf(provider._source.bid) > -1" ng-click="toggleSelection(provider._source.bid)" /> Add to Compare
+                        </p>
+                    </div>
+                    <div class="box-footer">
+                        <div class="form-group">
+                        <button class="small-box-footer btn bg-light-blue-active btn-flat pull-right btn-block" ng-click="showProfile(provider._source.bid)">  View Profile <i class="fa fa-arrow-circle-right"></i></button></div>
                     </div>
                 </div>
-           
+            </div>
+            <!-- /.box -->
+        </div>
+        <div class="row">
+            <div class="col-md-7 pull-right">
+                <paging
+                page="page"
+                page-size="12"
+                total="total"
+                ul-class="pagination pagination-sm inline pull-right"
+                show-prev-next="true"
+                paging-action="doSearch(page)">
+                </paging>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="modal" ak-modal="compareModal">
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button aria-label="Close" data-dismiss="modal" class="btn bg-navy btn-flat btn-xs pull-right" type="button" ng-click="closeModule()"><i class="fa  fa-close"></i> Close </button>
+        </div>
+        <div class="modal-body">
+
+
+                  <h3 class="box-title">Compare {{comparTotal}} providers</h3>
+
+                <div class="box-body table-responsive no-padding">
+                  <table class="table table-hover table-bordered table-striped">
+                    <tbody>
+                    <tr >
+                      <th> </th>
+                      <td ng-repeat="provider in compareProviders">
+                        <div class="widget-user-image text-center" ng-switch="provider._source.gender">
+                            <img ng-switch-when="male" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/male.jpg" class="img-circle" />
+                        <img ng-switch-when="female" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/female.jpg" class="img-circle" /> </div>
+                        <h4 class=" text-center"><a href="#/profile/{{page}}/{{ provider._source.bid }}"><strong>{{ provider._source.lastname }}</strong>, {{ provider._source.firstname }} {{ provider._source.mi }} </a></h4>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Spacilty</th>
+                      <td ng-repeat="provider in compareProviders">{{ provider._source.specialties.join(", ")}}</td>
+
+                    </tr>
+                     <tr>
+                      <th>Gender</th>
+                      <td ng-repeat="provider in compareProviders">
+                      <p class="text-muted" ng-if="provider._source.male">Male</p>
+                    <p class="text-muted" ng-if="provider._source.female">Female</p></td>
+
+                    </tr> <tr>
+                      <th>Spoken Languages</th>
+                      <td ng-repeat="provider in compareProviders">{{provider._source.language}}</td>
+
+                    </tr> <tr>
+                      <th>Location Code </th>
+                      <td ng-repeat="provider in compareProviders">{{provider._source.offcode}}</td>
+
+                    </tr> <tr>
+                      <th>National Provider Identifier</th>
+                      <td ng-repeat="provider in compareProviders">{{provider._source.nationalproviderid}}</td>
+
+                    </tr> <tr>
+                      <th>Board Certified</th>
+                      <td ng-repeat="provider in compareProviders">{{provider._source.board_certified}}</td>
+
+                    </tr> <tr>
+                      <th>Education</th>
+                      <td ng-repeat="provider in compareProviders">{{provider._source.degree}}</td>
+
+                    </tr> <tr>
+                      <th>Group Affiliation</th>
+                      <td ng-repeat="provider in compareProviders">{{provider._source.group_name}}</td>
+
+                    </tr> <tr>
+                      <th>Notes</th>
+                      <td ng-repeat="provider in compareProviders">{{provider._source.note}}</td>
+
+                    </tr> 
+                    <tr>
+                      <th>Practice Status</th>
+                      <td ng-repeat="provider in compareProviders">{{provider._source.acpt_new_pat}}</td>
+
+                    </tr>
+                      <tr>
+                      <th></th>
+                      <td ng-repeat="provider in compareProviders"><button    class="small-box-footer btn bg-light-blue-active btn-flat pull-right btn-block" ng-click="showProfile(provider._source.bid)"><i class="fa fa-user-md"></i> &nbsp;&nbsp;View Profile</button></td>
+
+                    </tr>
+                  </tbody></table>
+                </div><!-- /.box-body -->
+               
+                 
+             
+ </div>
+</div>
+</div>
+
+<div class="modal" ak-modal="showModal">
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button aria-label="Close" data-dismiss="modal" class="btn bg-navy btn-flat btn-xs pull-right" type="button" ng-click="closeModule()"><i class="fa  fa-close"></i> Close </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-widget widget-user">
+                        <!-- Add the bg color to the header using any of the bg-* classes -->
+                        <div class="widget-user-header bg-light-blue-active">
+                            <h3 class="widget-user-username col-md-8">{{details.name}}, {{details.degree}}</h3>
+                            <p class="pull-right">
+                            <img alt="" ng-if="details.omt1" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tier-one.png" typeof="foaf:Image" />
+                            <img alt="" ng-if="details.omt2" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tiertwo.png" typeof="foaf:Image" />
+                            </p>
+                            <h5 class="widget-user-desc col-md-6">{{details.specialties | arrayToCommaSeprated}}</h5>
                         </div>
-                    </div>
-                    <div class="col-md-9 error-page" ng-if="total == 0">
-                        <h3> Your search  did not match any documents.</h3>
-                        <H5>Did you mean? </h5>
-                        <ul class="list-unstyled">
-                            <li ng-repeat="suggest in suggestion">
-                            <a href="#"><b>{{suggest.text}}</b></a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-9" ng-if="total != 0">
-                         <div class="row">
-                                    <div class="col-md-12 ">
-                                        <span>Refined by : </span>
-                                        <span class="label label-default" ng-if="name">Name : {{name}}</span>
-                                        <span class="label label-default" ng-if="location">Zip : {{location}}</span>
-                                        <span class="label label-default" ng-if="req.gender">Gender : {{req.gender}}</span>
-                                        <span class="label label-default" ng-if="specialty_sel">Specialty: {{specialty_sel}}</span>
-                                        <span class="label label-default" ng-if="req.network">Network : {{req.network}}</span>
+                        <div class="widget-user-image" ng-switch="details.gender"><img ng-switch-when="male" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/male.jpg" class="img-circle" /> <img ng-switch-when="female" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/female.jpg" class="img-circle" /> </div>
+                        <div class="box-footer">
+                            <div class="row">
+                                <div class="col-sm-6 border-right">
+                                    <div class="description-block">
+                                        <h5 class="description-header"><i class="fa fa-map-marker margin-r-5"></i>{{details.address1}}</h5>
+                                        <span class="description-text">{{details.city}},{{details.state}}, {{details.zip}} -{{details.zip4}} -{{details.county}}  </span>
                                     </div>
+                                    <!-- /.description-block -->
                                 </div>
-                        <div class="row">
-                            <div class="col-md-5">
-                                <ul class="pagination pagination-sm inline pull-left">
-                                    <!--li><a href="">Showing  {{stNum}} - {{endNum}} of {{ total }}  In-Network Doctors</a></li-->
-                                    <li> <a href="#/compare/{{selectionBID | arrayToString}}" clas="bg-light-blue-active"><i class="fa fa-files-o"></i> Compare {{selectionBID.size()}} Doctors</a></li>
-                                </ul>
+                                <!-- /.col -->
+                                <div class="col-sm-2">
+                                    <div class="description-block">
+                                        <h5 class="description-header"> <i class="fa fa-phone margin-r-5"></i>Phone</h5>
+                                        <span class="description-text">{{details.phone}}</span>
+                                    </div>
+                                    <!-- /.description-block -->
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-sm-2">
+                                    <div class="description-block">
+                                        <h5 class="description-header">FAX</h5>
+                                        <span class="description-text">{{details.fax}}</span>
+                                    </div>
+                                    <!-- /.description-block -->
+                                </div>
+                                <!-- /.col -->
+                                <div class="col-sm-2">
+                                    <div class="description-block">
+                                        <img alt="" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tier-one.png" typeof="foaf:Image" ng-if="checked" />
+                                    </div>
+                                    <!-- /.description-block -->
+                                </div>
+                                <!-- /.col -->
                             </div>
-                            <div class="col-md-7">
-                                <!--ul class="pagination pagination-sm inline pull-right">
-                                    <li ng-repeat="i in Range(1, 10)"><a href="#search/{{i}}" ng-click="doSearch(i)">{{i}}</a></li>
-                                </ul-->
-                                <paging
-                                  page="page"
-                                  page-size="12"
-                                  total="total"
-                                  ul-class="pagination pagination-sm inline pull-right"
-                                  show-prev-next="true"
-                                  paging-action="doSearch(page)">
-                                </paging>
-                            </div>
+                            <!-- /.col -->
                         </div>
-                        <div class="row">
-                            <div class="col-md-4" ng-repeat="provider in providers">
-                                <div class="box box-widget widget-user-2 box-solid">
-                                    <!-- Add the bg color to the header using any of the bg-* classes -->
-                                    <div class="widget-user-header dhf-widget-user-header bg-light-blue-active">
-                                        <div class="widget-user-image" ng-switch="provider._source.gender">
-                                        <img ng-switch-when="male" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/male.jpg" class="img-circle" /> 
-                                        <img ng-switch-when="female" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/female.jpg" class="img-circle" /> </div>
-                                        <!-- /.widget-user-image -->
-                                        <h4 class="fixed-username dhf-user"><a href=" " ng-click="showProfile(provider._source.bid)">{{ provider._source.name }}, {{ provider._source.degree }}</a></h4>
-                                        <p class="widget-user-desc">{{ provider._source.specialties.join(", ")}}</p>
-                                        <p class="widget-user-desc">
-                                        <img class="pull-right" ng-if="provider._source.omt1" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tier-one.png" typeof="foaf:Image" />
-                                        <img class="pull-right" ng-if="provider._source.omt2" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tiertwo.png" typeof="foaf:Image" /></p>
-                                    </div>
-                                    <div class="box-body"> <strong>  <i class="fa fa-phone margin-r-5"></i>Phone</strong>
-                                        <p class="">{{ provider._source.phone }}</p> <strong><i class="fa fa-map-marker margin-r-5"></i>Location</strong>
-                                        <p class=" dhf-addrs">{{ provider._source.address1 }} <br/> {{ provider._source.city }}, {{ provider._source.state }} <br/> {{ provider._source.zip }}-{{ provider._source.zip4 }}</p> <strong ng-if="provider._source.distance"><i class="fa fa-car margin-r-5"></i>Distance</strong>
-                                        <p class="" ng-if="provider._source.distance">{{ provider._source.distance }} Miles Away</p>
-                                        <p>
-                                        <input id="{{ provider._source.bid}}" class="" type="checkbox" value="{{provider._source.bid}}" ng-checked="selection.indexOf(provider._source.bid) > -1" ng-click="toggleSelection(provider._source.bid)" /> Add to Compare
-                                        </p>
-                                    </div>
-                                    <div class="box-footer">
-                                        <div class="form-group">
-                                        <button class="small-box-footer btn bg-light-blue-active btn-flat pull-right btn-block" ng-click="showProfile(provider._source.bid)">  View Profile <i class="fa fa-arrow-circle-right"></i></button></div>
-                                    </div>
+                        <!-- /.row -->
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <!-- Profile Image -->
+                    <div class="box box-primary">
+                        <div class="box-header bg-light-blue-active">
+                            <h3 class="box-title">Plans Accepted</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body  box-profile">
+                            <div class="col-md-4" ng-repeat="plan in plans"><i class="icon fa fa-check text-green"></i> {{plan.name}}</div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <div class="col-md-12">
+                    <!-- Profile Image -->
+                    <div class="box box-primary">
+                        <div class="box-header bg-light-blue-active">
+                            <h3 class="box-title">Doctor Details</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-sm-4 border-right">
+                                    <strong>
+                                    <i class="fa  fa-genderless margin-r-5"></i>
+                                    Gender
+                                    </strong>
+                                    <p class="text-muted" ng-if="details.male">Male</p>
+                                    <p class="text-muted" ng-if="details.female">Female</p>
+                                    <hr>
+                                    <strong>
+                                    <i class="fa fa-language margin-r-5"></i>
+                                    Spoken Languages
+                                    </strong>
+                                    <p class="text-muted">{{details.language}}</p>
+                                    <hr>
+                                    <strong>
+                                    <i class="fa fa-hospital-o margin-r-5"></i>
+                                    Location Code
+                                    </strong>
+                                    <p class="text-muted">{{details.offcode}}</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <strong>
+                                    <i class="fa  fa-medkit margin-r-5"></i>
+                                    National Provider Identifier
+                                    </strong>
+                                    <p class="text-muted">{{details.nationalproviderid}}</p>
+                                    <hr>
+                                    <strong>
+                                    <i class="fa  fa-stethoscope margin-r-5"></i>
+                                    Board Certified
+                                    </strong>
+                                    <p class="text-muted">{{details.board_certified}}</p>
+                                    <hr>
+                                    <strong>
+                                    <i class="fa  fa-university margin-r-5"></i>
+                                    Education
+                                    </strong>
+                                    <p class="text-muted">{{details.degree}}</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <strong>
+                                    <i class="fa  fa-group margin-r-5"></i>
+                                    Group Affiliation
+                                    </strong>
+                                    <p class="text-muted">{{details.group_name}}</p>
+                                    <hr>
+                                    <strong>
+                                    <i class="fa fa-sticky-note-o margin-r-5"></i>
+                                    Notes
+                                    </strong>
+                                    <p class="text-muted">{{details.note}}</p>
+                                    <hr>
+                                    <strong>
+                                    <i class="fa  fa-plus-square margin-r-5"></i>
+                                    Practice Status
+                                    </strong>
+                                    <p class="text-muted">{{details.acpt_new_pat}}</p>
                                 </div>
                             </div>
-                            <!-- /.box -->
-                        </div>
-                        <div class="row">
-                            <div class="col-md-7 pull-right">
-                               <paging
-                                  page="page"
-                                  page-size="12"
-                                  total="total"
-                                  ul-class="pagination pagination-sm inline pull-right"
-                                  show-prev-next="true"
-                                  paging-action="doSearch(page)">
-                                </paging>
-                            </div>
+                            <!-- /.box-body -->
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal" ak-modal="showModal">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button aria-label="Close" data-dismiss="modal" class="btn bg-navy btn-flat btn-xs pull-right" type="button" ng-click="closeModule()"><i class="fa  fa-close"></i> Close </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="box box-widget widget-user">
-                                        <!-- Add the bg color to the header using any of the bg-* classes -->
-                                        <div class="widget-user-header bg-light-blue-active">
-                                            <h3 class="widget-user-username col-md-8">{{details.name}}, {{details.degree}}</h3>
-                                            <p class="pull-right">
-                                            <img alt="" ng-if="details.omt1" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tier-one.png" typeof="foaf:Image" />
-                                            <img alt="" ng-if="details.omt2" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tiertwo.png" typeof="foaf:Image" />
-                                            </p>
-                                            <h5 class="widget-user-desc col-md-6">{{details.specialties | arrayToCommaSeprated}}</h5>
-                                        </div>
-                                        <div class="widget-user-image" ng-switch="details.gender"><img ng-switch-when="male" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/male.jpg" class="img-circle" /> <img ng-switch-when="female" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/female.jpg" class="img-circle" /> </div>
-                                        <div class="box-footer">
-                                            <div class="row">
-                                                <div class="col-sm-6 border-right">
-                                                    <div class="description-block">
-                                                        <h5 class="description-header"><i class="fa fa-map-marker margin-r-5"></i>{{details.address1}}</h5>
-                                                        <span class="description-text">{{details.city}},{{details.state}}, {{details.zip}} -{{details.zip4}} -{{details.county}}  </span>
-                                                    </div>
-                                                    <!-- /.description-block -->
-                                                </div>
-                                                <!-- /.col -->
-                                                <div class="col-sm-2">
-                                                    <div class="description-block">
-                                                        <h5 class="description-header"> <i class="fa fa-phone margin-r-5"></i>Phone</h5>
-                                                        <span class="description-text">{{details.phone}}</span>
-                                                    </div>
-                                                    <!-- /.description-block -->
-                                                </div>
-                                                <!-- /.col -->
-                                                <div class="col-sm-2">
-                                                    <div class="description-block">
-                                                        <h5 class="description-header">FAX</h5>
-                                                        <span class="description-text">{{details.fax}}</span>
-                                                    </div>
-                                                    <!-- /.description-block -->
-                                                </div>
-                                                <!-- /.col -->
-                                                <div class="col-sm-2">
-                                                    <div class="description-block">
-                                                        <img alt="" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tier-one.png" typeof="foaf:Image" ng-if="checked" />
-                                                    </div>
-                                                    <!-- /.description-block -->
-                                                </div>
-                                                <!-- /.col -->
-                                            </div>
-                                            <!-- /.col -->
-                                        </div>
-                                        <!-- /.row -->
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <!-- Profile Image -->
-                                    <div class="box box-primary">
-                                        <div class="box-header bg-light-blue-active">
-                                            <h3 class="box-title">Plans Accepted</h3>
-                                        </div>
-                                        <!-- /.box-header -->
-                                        <div class="box-body  box-profile">
-                                            <div class="col-md-4" ng-repeat="plan in plans"><i class="icon fa fa-check text-green"></i> {{plan.name}}</div>
-                                        </div>
-                                        <!-- /.box-body -->
-                                    </div>
-                                    <!-- /.box -->
-                                </div>
-                                <div class="col-md-12">
-                                    <!-- Profile Image -->
-                                    <div class="box box-primary">
-                                        <div class="box-header bg-light-blue-active">
-                                            <h3 class="box-title">Doctor Details</h3>
-                                        </div>
-                                        <!-- /.box-header -->
-                                        <div class="box-body">
-                                            <div class="row">
-                                                <div class="col-sm-4 border-right">
-                                                    <strong>
-                                                    <i class="fa  fa-genderless margin-r-5"></i>
-                                                    Gender
-                                                    </strong>
-                                                    <p class="text-muted" ng-if="details.male">Male</p>
-                                                    <p class="text-muted" ng-if="details.female">Female</p>
-                                                    <hr>
-                                                    <strong>
-                                                    <i class="fa fa-language margin-r-5"></i>
-                                                    Spoken Languages
-                                                    </strong>
-                                                    <p class="text-muted">{{details.language}}</p>
-                                                    <hr>
-                                                    <strong>
-                                                    <i class="fa fa-hospital-o margin-r-5"></i>
-                                                    Location Code
-                                                    </strong>
-                                                    <p class="text-muted">{{details.offcode}}</p>
-                                                </div>
-                                                 <div class="col-sm-4">
-                                                 <strong>
-                                                    <i class="fa  fa-medkit margin-r-5"></i>
-                                                    National Provider Identifier
-                                                    </strong>
-                                                 <p class="text-muted">{{details.nationalproviderid}}</p>
-                                                    <hr>
-                                                    <strong>
-                                                    <i class="fa  fa-stethoscope margin-r-5"></i>
-                                                    Board Certified
-                                                    </strong>
-                                                    <p class="text-muted">{{details.board_certified}}</p>
-                                                     <hr>
-                                                    <strong>
-                                                    <i class="fa  fa-university margin-r-5"></i>
-                                                    Education
-                                                    </strong>
-                                                    <p class="text-muted">{{details.degree}}</p>
-                                                  </div>
-                                                <div class="col-sm-4">
-                                                    <strong>
-                                                    <i class="fa  fa-group margin-r-5"></i>
-                                                    Group Affiliation
-                                                    </strong>
-                                                    <p class="text-muted">{{details.group_name}}</p>
-                                                    <hr>
-                                                    <strong>
-                                                    <i class="fa fa-sticky-note-o margin-r-5"></i>
-                                                    Notes
-                                                    </strong>
-                                                    <p class="text-muted">{{details.note}}</p>
-                                                    <hr>
-                                                    <strong>
-                                                    <i class="fa  fa-plus-square margin-r-5"></i>
-                                                    Practice Status
-                                                    </strong>
-                                                    <p class="text-muted">{{details.acpt_new_pat}}</p>
-                                                </div>
-                                            </div>
-                                            <!-- /.box-body -->
-                                        </div>
-                                    </div>
-                                </div>
+        </div>
+        <!--div class="modal-footer">
+                                    <button aria-label="Close" data-dismiss="modal" class="btn bg-navy btn-flat btn-xs " type="button" ng-click="closeModule()"><i class="fa  fa-close"></i> Close </button>
                             </div>
-                        </div>
-                        <!--div class="modal-footer">
-                            <button aria-label="Close" data-dismiss="modal" class="btn bg-navy btn-flat btn-xs " type="button" ng-click="closeModule()"><i class="fa  fa-close"></i> Close </button>
-                        </div>
-                        </div--><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div>
-                </div>
+    </div--><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+</div>

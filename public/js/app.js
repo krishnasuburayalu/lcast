@@ -140,8 +140,8 @@ dhf.config(function($stateProvider, $urlRouterProvider) {
             "content@": {
                 templateUrl: "partials/list.tpl.html"
             },
-            "searchbar@": {
-                templateUrl: "partials/searchbar.html"
+            "sidebar@": {
+                templateUrl: "partials/sidebar.html"
             },
         },
         //template: LIST_TPL,
@@ -152,8 +152,8 @@ dhf.config(function($stateProvider, $urlRouterProvider) {
             "content@": {
                 templateUrl: "partials/list.tpl.html"
             },
-            "searchbar@": {
-                templateUrl: "partials/searchbar.html"
+             "sidebar@": {
+                templateUrl: "partials/sidebar.html"
             },
         },
         //template: LIST_TPL,
@@ -165,7 +165,7 @@ dhf.config(function($stateProvider, $urlRouterProvider) {
                 templateUrl: "partials/compare.html"
             }
         },
-        controller: 'defaultCtrl'
+        controller: 'SearchCtrl'
     })
 
     /*.state('profile', {
@@ -226,6 +226,7 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
     $scope.total = 0;
     $scope.page = 1;
     $scope.showModal = false;
+    $scope.compareModal = false;
     $scope.pagination = {
         'total': 0,
         'current_page': 1,
@@ -425,6 +426,42 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
         return result;
     };
 
+     $scope.selectionBID = [];
+    // toggle selectionBID for a given Provider
+    $scope.toggleSelection = function toggleSelection(bid) {
+        var idx = $scope.selectionBID.indexOf(bid);
+        // is currently selected
+        if (idx > -1) {
+            $scope.selectionBID.splice(idx, 1);
+        }
+        // is newly selected
+        else {
+            $scope.selectionBID.push(bid);
+        }
+    };
+
+    $scope.compareProfile = function(ids) {
+        $scope.profileShow = 'show';
+        if (ids == undefined || ids == '') {
+            return false;
+        }
+        id = ids.join(',');
+        url = '/profile/search?bid=' +  id;
+        $http.get(url).
+        success(function(data, status) {
+            $scope.error = data.error;
+            if (!$scope.error) { // with results
+                $scope.comparTotal = data.response.total;
+                $scope.compareProviders = data.response.hits;
+                $scope.compareModal = true;
+            }
+        }).error(function(data, status) {
+            $scope.data = data || "Request failed";
+            $scope.status = status;
+            $scope.error = true;
+        });
+    };
+
     $scope.showProfile = function(id) {
         if (id != undefined) {
             $scope.profile_id = id
@@ -444,6 +481,7 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
     };
     $scope.closeModule =  function(){
         $scope.showModal = false;
+        $scope.compareModal = false;
     }
     if ($scope.current_path == 'search') {
         $scope.doSearch($scope.param2);
@@ -467,36 +505,7 @@ dhf.animation('.reveal-animation', function() {
         }
     }
 })
-dhf.controller("ProfileCtrl", function($scope, $http, $stateParams, $location, $state) {
-    var path = $location.path().split('/');
-    if (path[1] !== undefined) {
-        $scope.current_path = path[1];
-    }
-    if (path[2] !== undefined) {
-        $scope.page = path[2];
-    }
-    if (path[3] !== undefined) {
-        $scope.id = path[3];
-    }
-    $scope.profileShow = 'show';
-    if ($scope.id == undefined || $scope.id == '') {
-        $scope.error = true;
-        return false;
-    }
-    url = '/profile/show/' + $scope.id
-    alert(url);
-    $http.get(url).
-    success(function(data, status) {
-        $scope.error = data.error;
-        if (!$scope.error) { // with results
-            $scope.details = data.response;
-        }
-    }).error(function(data, status) {
-        $scope.data = data || "Request failed";
-        $scope.status = status;
-        $scope.error = true;
-    });
-});
+ 
 dhf.controller("defaultCtrl", function($scope, $http, $stateParams, $location, $state) {
     $scope.url = '/profile/search'; // The url of our search
     $scope.searchurl = Math.floor(Math.random() * (9999 - 100)) + 100;;

@@ -12,7 +12,10 @@
 .dhf-addrs{
 	min-height:40px;
 }
-
+.dhf-lead{
+margin-bottom: 0px;
+color: #fff;
+}
 /* AUTOCOMPLETE */
 
 .autocomplete{
