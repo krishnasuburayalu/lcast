@@ -40,7 +40,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body class="sidebar-mini skin-blue " ng-controller="SearchCtrl">
+    <body class="sidebar-mini skin-blue   fixed" ng-controller="SearchCtrl">
         <div class="wrapper">
             <!-- Main Header -->
             <header class="main-header">
@@ -59,13 +59,11 @@
                     <div class="navbar-header">
                     <ul class="nav navbar-nav ">
                         <li class="   ">
-                  
                     <h4 class="hidden-xs lead dhf-lead"> We've Got You Covered. Find Doctors, Hospitals or Other Providers Near You</h4>
-                
               </li>
+ 
 
                     </ul></div>
-                   
                 </nav>
             </header>
             <!-- =============================================== -->
@@ -121,7 +119,9 @@
                                     </div>
                                 </div>
                                 <!-- /.row -->
+                                <loading></loading>
                             </div>
+                            
                         </form>
                     </div>
                     <div class="row reveal-animation" ui-view="content"></div>

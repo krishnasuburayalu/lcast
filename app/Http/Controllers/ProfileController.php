@@ -243,7 +243,7 @@ class ProfileController extends Controller
         $field_parts = explode(',', $fields);
         $field = array();
         foreach ($field_parts as $f) {
-            $field[$f] = array('terms' => array('field' => $f, 'size' => 5));
+            $field[$f] = array('terms' => array('field' => $f, 'size' => 10));
         }
         $params['body']['query']['filtered']["filter"] = $filter;
         $params['body']['query']['filtered']["query"]['bool']['must'] = ProfileHelper::build_filters();;

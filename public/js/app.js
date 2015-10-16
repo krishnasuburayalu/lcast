@@ -279,6 +279,7 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
         if ($scope.specialty_sel != undefined && $scope.specialty_sel != '') {
             $scope.req.specialties = $scope.specialty_sel;
         }
+        $scope.loading = true;
         $http.get('/profile/search', {
             "params": $scope.req
         }).
@@ -316,10 +317,12 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
                     $scope.suggestion = [];
                 });
             }
+            $scope.loading = false;
         }).error(function(data, status) {
             $scope.data = data || "Request failed";
             $scope.total = 0;
             $scope.status = status;
+            $scope.loading = false;
         });
     };
     $scope.getAggregations = function() {
@@ -683,6 +686,22 @@ dhf.directive('akModal', function() {
         }
     };
 });
+dhf.directive('loading', function () {
+      return {
+        restrict: 'E',
+        replace:true,
+        template: '<div class="overlay"><i class="fa fa-refresh fa-spin"></i></div>',
+        link: function (scope, element, attr) {
+              scope.$watch('loading', function (val) {
+                  if (val)
+                      $(element).show();
+                  else
+                      $(element).hide();
+              });
+        }
+      }
+  })
+
 /**
  * Angular's private URL Builder method + unpublished dependencies converted to a public service
  * So we can properly build a GET url with parameters for a JSONP request.
