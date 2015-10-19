@@ -1,23 +1,26 @@
 .dhf-user{
 	/*min-height:60px;
 	font-size: 16px;*/
-	padding-left: 80px;
+	padding-left: 10px;
 }
 .dhf-user a{
   color: #fff;
 }
 .dhf-widget-user-header{
-  min-height:160px;
+  min-height:100px;
 }
 .dhf-addrs{
-	min-height:40px;
+	min-height:70px;
 }
 .dhf-lead{
 margin-bottom: 0px;
 color: #fff;
 }
 /* AUTOCOMPLETE */
-
+.dhf-profile-user-img {
+  width: 60px;
+  padding: 0px;
+}
 .autocomplete{
   width: 100%;
   position: relative;

@@ -195,10 +195,13 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
-        'HTML' => 'Collective\Html\HtmlFacade',
-        'Form' => 'Collective\Html\FormFacade',
+        'HTML' 		=> 'Collective\Html\HtmlFacade',
+        'Form' 		=> 'Collective\Html\FormFacade',
         'ElasticSearch' => 'Mmanos\Search\Facade',
-        'Excel' => 'Maatwebsite\Excel\Facades\Excel',
+        'Excel' 		=> 'Maatwebsite\Excel\Facades\Excel',
+        'Lexer' 		=> 'GoodbyCSVImportStandardLexer',
+		'Interpreter' 	=> 'GoodbyCSVImportStandardInterpreter',
+		'LexerConfig' 	=> 'GoodbyCSVImportStandardLexerConfig',
 	],
 
 ];

@@ -14,6 +14,9 @@ use Pheanstalk\Pheanstalk;
 use Elasticsearch\Client;
 use LCast\ProfileHelper;
 use LCast\GeoHelper;
+use Goodby\CSV\Import\Standard\Lexer;
+use Goodby\CSV\Import\Standard\Interpreter;
+use Goodby\CSV\Import\Standard\LexerConfig;
 
 class ProfileController extends Controller
 {
@@ -44,15 +47,18 @@ class ProfileController extends Controller
         // Temporarily increase memory limit to 256MB
         ini_set('memory_limit', '512M');
         ini_set('max_execution_time', 60);
-        $csvfile = storage_path() . '/source_dir/sampleMDM.csv';
-        $csv = \Excel::load($csvfile, 'UTF-8')->toArray();
+        $provider = array();
+        $config = new LexerConfig();
+        $config->setDelimiter("\t");
+        $lexer = new Lexer($config);
         
-        //print_r( $csv);exit;
-        $is_empty = TRUE;
-        foreach ($csv as $data) {
-            
-            //$data = $data->toArray();
-            if (array_get($data, 'bid', FALSE) !== FALSE && array_get($data, 'command', FALSE) !== FALSE) {
+        $interpreter = new Interpreter();
+        $fields = array('COMMAND','TYPE','BID','GROUP_NAME','NAME','ADDRESS1','ADDRESS2','CITY','STATE','ZIP','PHONE','FAX','LASTNAME','FIRSTNAME','MI','DEGREE','JCode','NASCO','NOTE','JCODE_PANEL_STATUS','JCODE_PANEL_CODE','LANGUAGE','SSN','TAXID','COUNTY','DataID','PRODUCT_SPECIALTY_HOSPITAL','MGCN','TRAD','STNY','NJPL','MCBL','HDTC','HDDC','HDDP','HDDT','MCNY','VSTANY','NYEP','NYPP','ADVN','ACO','PCMH','MALE','FEMALE','Mon_open1','Mon_close1','Mon_open2','Mon_close2','Tue_open1','Tue_close1','Tue_open2','Tue_close2','Wed_open1','Wed_close1','Wed_open2','Wed_close2','Thu_open1','Thu_close1','Thu_open2','Thu_close2','Fri_open1','Fri_close1','Fri_open2','Fri_close2','Sat_open1','Sat_close1','Sat_open2','Sat_close2','Sun_open1','Sun_close1','Sun_open2','Sun_close2','NATIONALPROVIDERID','NET_START_DATE','DENTEMAX','LUCENT','OFFCODE','ANCTEST','HOSPCODE','HOSP','RPQ','HORIZON_DENTAL_EPO','BOARD_CERTIFIED','SPECIALTY','LATITUDE','LONGITUDE','EHR','QRP','NCQA','HNJH_IND','PRACTICE_LIMITATION','ACPT_NEW_PAT','MCR_RATING','MBPC','BRNB','SHMC','CCX','OMT1','OMT2','OAT1','OST2','OST1','OAT2','OMT1_EFF_DT','OMT1_END_DT','OMT2_EFF_DT','OMT2_END_DT','OAT1_EFF_DT','OAT1_END_DT','OST2_EFF_DT','OST2_END_DT','OST1_EFF_DT','OST1_END_DT','OAT2_EFF_DT','OAT2_END_DT','TRAD_EFF_DT','TRAD_END_DT','MGCN_EFF_DT','MGCN_END_DT','MCBL_EFF_DT','MCBL_END_DT','ADVN_EFF_DT','ADVN_END_DT','ACO_EFF_DT','ACO_END_DT','PCMH_EFF_DT','PCMH_END_DT','MBPC_EFF_DT','MBPC_END_DT','BRNB_EFF_DT','BRNB_END_DT','SHMC_EFF_DT','SHMC_END_DT');
+        $fields =array_map('strtolower', $fields);
+        $response = array();
+        $interpreter->addObserver(function (array $row) use ($fields, &$response) {
+            $data = array_combine($fields, $row);
+            if (array_get($data, 'bid', FALSE) !== FALSE && array_get($data, 'command', FALSE) !== FALSE && array_get($data, 'type', FALSE) == 'H') {
                 $data['processed_date'] = ProfileHelper::get_today_date();
                 switch (array_get($data, 'command', 'A')) {
                     case 'A':
@@ -66,7 +72,7 @@ class ProfileController extends Controller
                         $queue_message['action'] = ProfileHelper::QUEUE_METHOD_DELETE;
                         $queue_message['data'] = $data;
                         $this->push_into_queue($queue_message);
-                        $response['profile'][] = array('id' => $data['bid'], 'status' => 'success', 'action' => 'Add');
+                        $response['profile'][] = array('id' => $data['bid'], 'status' => 'success', 'action' => 'DEL');
                         break;
 
                     default:
@@ -76,12 +82,10 @@ class ProfileController extends Controller
                         $response['profile'][] = array('id' => $data['bid'], 'status' => 'success', 'action' => 'Add');
                         return true;
                 }
-                $is_empty = FALSE;
             }
-        }
-        if ($is_empty === TRUE) {
-            return \Response::json(array('error' => true, 'response' => array('error' => true, 'message' => 'profile not found.')), 404);
-        }
+        });
+
+        $lexer->parse(storage_path() . '/source_dir/MDM_COMMERCIALFULL-20150730112521.csv', $interpreter);
         return \Response::json(array('error' => false, 'response' => $response), 200);
     }
     
@@ -154,7 +158,6 @@ class ProfileController extends Controller
     
     public function search() {
         $q = \Input::get('q', '');
-        $type = \Input::get('type', 'D');
         $size = (int)\Input::get('size', 10);
         $skip = (int)\Input::get('skip', 0);
         $fields = \Input::get('fields', 'bid,type,network,firstname,lastname,name,phone,county,city,address1,address2,state,zip,zip4,phone,degree,language,mi,state,gender,omt1,omt2,specialties,location');
@@ -179,6 +182,7 @@ class ProfileController extends Controller
         }
         $params['body']['query']['filtered']["filter"] = $filter;
         $params['body']['query']['filtered']["query"]['bool']['must'] = ProfileHelper::build_filters();
+        
         //print_r($params['body']);exit;
         $results = \Es::search($params);
         $count = array_get($results, 'hits.total', 0);
@@ -186,8 +190,8 @@ class ProfileController extends Controller
         if ($zip != 0 && $count > 0) {
             foreach ($results['hits']['hits'] as $result) {
                 $zip_cordinates = GeoHelper::get_geocode($zip);
-                $result['_source']['distance'] =  ProfileHelper::distance($zip_cordinates['location']['lat'], $zip_cordinates['location']['lon'], $result['_source']['location']['lat'], $result['_source']['location']['lon']);
-                $result['_source']['distance'] = (float) number_format($result['_source']['distance'], 2, '.', '');
+                $result['_source']['distance'] = ProfileHelper::distance($zip_cordinates['location']['lat'], $zip_cordinates['location']['lon'], $result['_source']['location']['lat'], $result['_source']['location']['lon']);
+                $result['_source']['distance'] = (float)number_format($result['_source']['distance'], 2, '.', '');
                 $newresults[] = $result;
             }
             $results['hits']['hits'] = $newresults;
@@ -224,7 +228,6 @@ class ProfileController extends Controller
     
     public function facets() {
         $q = \Input::get('q', '');
-        $type = \Input::get('type', 'D');
         $size = (int)\Input::get('size', 10);
         $skip = (int)\Input::get('skip', 0);
         $fields = \Input::get('fcfields', 'language,county');

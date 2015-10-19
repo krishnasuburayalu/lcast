@@ -133,7 +133,7 @@ dhf.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('home', {
         url: '/',
         template: '<div class="col-md-12"><h1> Please enter criteria for at least one of the required fields. </h1></div>',
-        controller: 'defaultCtrl'
+        controller: 'searchall'
     }).state('search', {
         url: '/search',
         views: {
@@ -304,7 +304,7 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
                     $scope.suggestion = [];
                 });
             }
-            if ($scope.total <= 0 && $scope.specialty_sel != '') {
+            if ($scope.total <= 0 && $scope.specialty_sel != undefined && $scope.specialty_sel != '' && $scope.suggestion.length <=0 ) {
                 //get suggestion
                 $http.get('profile/suggest?field=specialties_suggest&q=' + $scope.specialty_sel).
                 success(function(data2, status) {
@@ -328,7 +328,7 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
     $scope.getAggregations = function() {
         $scope.aggregations = [];
         $scope.factreq = $scope.req;
-        $scope.factreq.fcfields = 'language,county,network,specialties,gender';
+        $scope.factreq.fcfields = 'language,county,network,specialties,gender,type';
         $http.get('/profile/facets', {
             "params": $scope.factreq
         }).
@@ -511,164 +511,7 @@ dhf.animation('.reveal-animation', function() {
     }
 })
  
-dhf.controller("defaultCtrl", function($scope, $http, $stateParams, $location, $state) {
-    $scope.url = '/profile/search'; // The url of our search
-    $scope.searchurl = Math.floor(Math.random() * (9999 - 100)) + 100;;
-    $scope.total = 0;
-    $scope.page = 1;
-    $scope.plans = PLANS;
-    $scope.details = [];
-    $scope.distsnce = DISTANCE;
-    $scope.language = LANGUAGE;
-    $scope.gender = GENDER;
-    $scope.req = DEFAULT_PARAM;
-    $scope.profileShow = false;
-    $scope.first_req = true;
-    $scope.pageslist = new Array(5);
-    $scope.empty_req = {};
-    $scope.aggregations = [];
-    $scope.suggestion = [];
-    var current_path = '/';
-    var path = $location.path().split('/');
-    if (path[1] !== undefined) {
-        current_path = path[1];
-    }
-    $scope.page = ($stateParams.page == undefined) ? 1 : parseInt($stateParams.page);
-    $scope.req.skip = ($scope.page * RES_SIZE) - RES_SIZE;
-    $scope.req.size = RES_SIZE;
-
-    $scope.getquery = function() {
-        var searchurl = '';
-        angular.forEach($scope.req, function(value, key) {
-            searchurl += key + ':' + value + '|';
-        });
-        $scope.searchurl = searchurl;
-    }
-    $scope.showProfile = function() {
-        $scope.profileShow = 'show';
-        console.log($stateParams);
-        console.log($state.params);
-        if ($stateParams.id == undefined || $stateParams.id == '') {
-            $scope.error = true;
-            return false;
-        }
-        url = '/profile/show/' + $stateParams.id
-        $http.get(url).
-        success(function(data, status) {
-            $scope.error = data.error;
-            if (!$scope.error) { // with results
-                $scope.details = data.response;
-                $state.go("profile");
-            }
-        }).error(function(data, status) {
-            $scope.data = data || "Request failed";
-            $scope.status = status;
-            $scope.error = true;
-        });
-    };
-    $scope.changeView = function() {
-        $state.transitionTo('searchall', {
-            page: 1
-        });
-        $state.reload()
-    }
-    $scope.getAggregations = function(param) {
-        param.fields = 'language,city,county,degree,group_name,network,specialties';
-        var aggregations = [];
-        $http.get('/profile/facets', {
-            "params": param
-        }).
-        success(function(data, status) {
-            $scope.error = data.error;
-            if (!$scope.error) { // with results
-                $scope.aggregationstotal = parseInt(data.response.total);
-                aggregations['language'] = data.response.language.terms || [];
-                aggregations['city'] = data.response.city.terms || [];
-                aggregations['county'] = data.response.county.terms || [];
-                aggregations['degree'] = data.response.degree.terms || [];
-                aggregations['group_name'] = data.response.group_name.terms || [];
-                aggregations['network'] = data.response.network.terms || [];
-                aggregations['specialties'] = data.response.specialties.terms || [];
-                aggregations['acpt_new_pat'] = data.response.acpt_new_pat.terms || [];
-            }
-        }).error(function(data, status) {
-            $scope.aggregations = [];
-            $scope.aggregationstotal = 0;
-            $scope.status = status;
-        });
-        return aggregations;
-    }
-   
-    $scope.Range = function(start, end) {
-        var result = [];
-        for (var i = parseInt(start); i <= parseInt(end); i++) {
-            result.push(i);
-        }
-        return result;
-    };
-    $scope.getPageNumber = function() {
-        var totalpages = ($scope.total > 0) ? Math.abs($scope.total / PAGE_SIZE) : 1;
-        return new Array(totalpages);
-    }
-    $scope.clear = function() {
-        $scope.req = null;
-        $scope.location = null;
-        $scope.specialty_sel = '';
-        $scope.name = null;
-        $scope.req = angular.copy($scope.empty_req)
-    };
-    $scope.compareProfile = function(typed) {
-        $scope.profileShow = 'show';
-        if ($stateParams.ids == undefined || $stateParams.ids == '') {
-            $scope.error = true;
-            return false;
-        }
-        url = '/profile/search?bid=' + $stateParams.ids
-        $http.get(url).
-        success(function(data, status) {
-            $scope.error = data.error;
-            if (!$scope.error) { // with results
-                $scope.comparTotal = data.response.total;
-                $scope.providers = data.response.hits;
-            }
-        }).error(function(data, status) {
-            $scope.data = data || "Request failed";
-            $scope.status = status;
-            $scope.error = true;
-        });
-    };
-    switch (current_path) {
-        case 'profile':
-            $scope.showProfile();
-            break;
-        case 'compare':
-            $scope.compareProfile();
-            break;
-        case 'search':
-            $scope.search($scope.req);
-            break;
-        default:
-            $scope.req = null;
-            $scope.location = null;
-            $scope.specialty_sel = '';
-            $scope.name = null;
-            $scope.req = angular.copy($scope.empty_req)
-            break;
-    }
-    $scope.selectionBID = [];
-    // toggle selectionBID for a given Provider
-    $scope.toggleSelection = function toggleSelection(bid) {
-        var idx = $scope.selectionBID.indexOf(bid);
-        // is currently selected
-        if (idx > -1) {
-            $scope.selectionBID.splice(idx, 1);
-        }
-        // is newly selected
-        else {
-            $scope.selectionBID.push(bid);
-        }
-    };
-});
+ 
 
 dhf.directive('akModal', function() {
     return {

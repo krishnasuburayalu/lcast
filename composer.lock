@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a29f76fdf4ba18727ce935503dcbd119",
-    "content-hash": "644236829cb408a0eb62fb220e3675a0",
+    "hash": "af3de570dabbd6bf4e0253d1e2d81431",
+    "content-hash": "a1c80005b30cd1b894793585d9b0c306",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -332,6 +332,63 @@
                 "search"
             ],
             "time": "2015-09-17 22:01:44"
+        },
+        {
+            "name": "goodby/csv",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/goodby/csv.git",
+                "reference": "66c376b3bd51bc90fd680bfdf3708c9a22b9d081"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/goodby/csv/zipball/66c376b3bd51bc90fd680bfdf3708c9a22b9d081",
+                "reference": "66c376b3bd51bc90fd680bfdf3708c9a22b9d081",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": ">=1.1.0",
+                "mockery/mockery": ">=0.7.2",
+                "phpunit/phpunit": "3.7.*",
+                "suin/php-expose": ">=1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Goodby\\CSV": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "suin",
+                    "email": "suinyeze@gmail.com",
+                    "homepage": "https://www.facebook.com/suinyeze",
+                    "role": "Developer, Renaming Specialist"
+                },
+                {
+                    "name": "reoring",
+                    "email": "mori.reo@gmail.com",
+                    "homepage": "https://www.facebook.com/reoring",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CSV import/export library",
+            "homepage": "https://github.com/goodby/csv",
+            "keywords": [
+                "csv",
+                "export",
+                "import"
+            ],
+            "time": "2015-01-14 03:58:50"
         },
         {
             "name": "guzzle/guzzle",
@@ -1119,16 +1176,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.17.1",
+            "version": "1.17.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "0524c87587ab85bc4c2d6f5b41253ccb930a5422"
+                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/0524c87587ab85bc4c2d6f5b41253ccb930a5422",
-                "reference": "0524c87587ab85bc4c2d6f5b41253ccb930a5422",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
+                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
                 "shasum": ""
             },
             "require": {
@@ -1142,10 +1199,11 @@
                 "aws/aws-sdk-php": "^2.4.9",
                 "doctrine/couchdb": "~1.0@dev",
                 "graylog2/gelf-php": "~1.0",
+                "jakub-onderka/php-parallel-lint": "0.9",
                 "php-console/php-console": "^3.1.3",
                 "phpunit/phpunit": "~4.5",
                 "phpunit/phpunit-mock-objects": "2.3.0",
-                "raven/raven": "~0.11",
+                "raven/raven": "^0.13",
                 "ruflin/elastica": ">=0.90 <3.0",
                 "swiftmailer/swiftmailer": "~5.3",
                 "videlalvaro/php-amqplib": "~2.4"
@@ -1191,7 +1249,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-08-31 09:17:37"
+            "time": "2015-10-14 12:51:02"
         },
         {
             "name": "mtdowling/cron-expression",
@@ -3105,16 +3163,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.11",
+            "version": "4.8.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "bdd199472410fd7e32751f9c814c7e06f2c21bd5"
+                "reference": "be067d6105286b74272facefc2697038f8807b77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/bdd199472410fd7e32751f9c814c7e06f2c21bd5",
-                "reference": "bdd199472410fd7e32751f9c814c7e06f2c21bd5",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/be067d6105286b74272facefc2697038f8807b77",
+                "reference": "be067d6105286b74272facefc2697038f8807b77",
                 "shasum": ""
             },
             "require": {
@@ -3173,7 +3231,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-10-07 10:39:46"
+            "time": "2015-10-14 13:49:40"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -3465,16 +3523,16 @@
         },
         {
             "name": "sebastian/global-state",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/global-state.git",
-                "reference": "23af31f402993cfd94e99cbc4b782e9a78eb0e97"
+                "reference": "bc37d50fea7d017d3d340f230811c9f1d7280af4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/23af31f402993cfd94e99cbc4b782e9a78eb0e97",
-                "reference": "23af31f402993cfd94e99cbc4b782e9a78eb0e97",
+                "url": "https://api.github.com/repos/sebastianbergmann/global-state/zipball/bc37d50fea7d017d3d340f230811c9f1d7280af4",
+                "reference": "bc37d50fea7d017d3d340f230811c9f1d7280af4",
                 "shasum": ""
             },
             "require": {
@@ -3512,7 +3570,7 @@
             "keywords": [
                 "global state"
             ],
-            "time": "2015-06-21 15:11:22"
+            "time": "2015-10-12 03:26:01"
         },
         {
             "name": "sebastian/recursion-context",

@@ -104,7 +104,7 @@
                                     <div class="col-md-3">
                                         <div class="row">
                                             <div class="col-xs-12">
-                                                <label>Localtion</label>
+                                                <label>Location</label>
                                                 <autocomplete ng-model="location" data="locations" on-type="updateLocation" attr-input-class="form-control my-colorpicker1 colorpicker-element"></autocomplete>
                                             </div>
                                         </div>
@@ -113,8 +113,8 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <br/>
-                                            <button  type="submit"  class="btn bg-orange btn-flat margin" ><span class="glyphicon glyphicon-search"></span> Search</button>
-                                            <button   class="btn bg-navy btn-flat margin" ng-click="clearSearch()"><span class="glyphicon glyphicon-search"></span> Clear</button>
+                                            <button  type="submit"  class="btn bg-orange btn-flat margin" ><span class="fa  fa-search"></span> Search</button>
+                                            <button   class="btn bg-navy btn-flat margin" ng-click="clearSearch()"><span class="fa  fa-refresh"></span> Clear</button>
                                         </div>
                                     </div>
                                 </div>
