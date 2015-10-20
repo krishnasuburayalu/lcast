@@ -215,6 +215,7 @@ dhf.controller("homeCtrl", function($scope, $http, $stateParams) {
 dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
     /*Defult values*/
     $scope.listload = true;
+    $scope.firstload = true;
     $scope.req = [];
     $scope.aggregations = [];
     $scope.suggestion = [];
@@ -252,6 +253,7 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
     /*Path parts from*/
     $scope.doSearch = function(page) {
         list_load = true;
+        $scope.firstload = false;
         var path = $location.path().split('/');
         if (path[1] !== undefined) {
             $scope.current_path = path[1];
@@ -488,10 +490,9 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
         $scope.showModal = false;
         $scope.compareModal = false;
     }
-    if ($scope.current_path == 'search') {
-        $scope.doSearch($scope.param2);
+    if ($scope.firstload) {
+        $scope.doSearch(1);
     }
-    
 });
 dhf.animation('.reveal-animation', function() {
     return {
