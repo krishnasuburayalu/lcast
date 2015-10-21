@@ -293,7 +293,7 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
                 $scope.providers = data.response.hits;
                 $scope.getAggregations();
             }
-            if ($scope.total <= 0 && $scope.name != '') {
+            if ($scope.total <= 0 && $scope.name != undefined && $scope.name != '') {
                 //get suggestion
                 $http.get('profile/suggest?q=' + $scope.name).
                 success(function(data2, status) {

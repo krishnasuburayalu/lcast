@@ -208,7 +208,7 @@ class ProfileController extends Controller
         $field = \Input::get('field', 'name_suggest');
         $params = ProfileHelper::get_elastic_config();
         unset($params['type']);
-        $params['body']['did-you-mean'] = array('text' => $q, "phrase" => array('size' => 5, "field" => $field, "real_word_error_likelihood" => 0.95, "max_errors" => 0.5, "gram_size" => 4,));
+        $params['body']['did-you-mean'] = array('text' => $q, "phrase" => array('size' => 5, "field" => $field, "real_word_error_likelihood" => 0.50, "max_errors" => 1.0, "gram_size" => 3));
         $results = \Es::suggest($params);
         $suggestons = array_get($results, 'did-you-mean.0.options', 0);
         return \Response::json(array('error' => false, 'response' => $suggestons), 200);

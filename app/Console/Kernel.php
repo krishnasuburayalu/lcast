@@ -12,6 +12,8 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected $commands = [
 		'LCast\Console\Commands\Inspire',
+		'LCast\Console\Commands\ProviderImport',
+		'LCast\Console\Commands\ProviderIndexRebuild',
 	];
 
 	/**
