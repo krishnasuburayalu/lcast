@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel {
 		'LCast\Console\Commands\Inspire',
 		'LCast\Console\Commands\ProviderImport',
 		'LCast\Console\Commands\ProviderIndexRebuild',
+		'LCast\Console\Commands\CallRoute',
 	];
 
 	/**
