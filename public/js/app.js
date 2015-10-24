@@ -250,6 +250,39 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
         $scope.doSearch(1);
     }
 
+$scope.getBoxClass = function(type) {
+    if(type == undefined){
+         return 'box-primary';
+    }
+         switch(type){
+            case 'S':
+            return 'box-danger';
+            break;
+             case 'H':
+            return 'box-warning ';
+            break;
+             case 'D':
+            return 'box-primary';
+            break;
+         }
+    }
+
+    $scope.getBtnClass = function(type) {
+    if(type == undefined){
+         return 'btn-primary';
+    }
+         switch(type){
+            case 'S':
+            return 'btn-danger';
+            break;
+             case 'H':
+            return 'btn-warning ';
+            break;
+             case 'D':
+            return 'btn-primary';
+            break;
+         }
+    }
     /*Path parts from*/
     $scope.doSearch = function(page) {
         list_load = true;

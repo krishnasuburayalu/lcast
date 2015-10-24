@@ -55,7 +55,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3" ng-repeat="provider in providers">
-                    <div class="box box-body  box-profile box-header with-border box-primary">
+                    <div class="box box-body box-profile box-header with-border {{getBoxClass(provider._source.type)}}">
                         <img ng-if="provider._source.gender == 'male'"  alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/male.jpg" class="profile-user-img img-responsive img-circle dhf-profile-user-img "/>
                         <img ng-if="provider._source.gender == 'female'"   alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/female.jpg" class="profile-user-img img-responsive img-circle dhf-profile-user-img "/>
                         <img ng-if="provider._source.type == 'H'" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/hospital.jpg" class="profile-user-img img-responsive img-circle dhf-profile-user-img " />
@@ -89,7 +89,7 @@
                                 </div>
                             </li>
                         </ul>
-                        <button class="small-box-footer btn bg-light-blue-active btn-flat pull-right btn-block" ng-click="showProfile(provider._source.bid)">  View Profile <i class="fa fa-arrow-circle-right"></i></button>
+                        <button class="small-box-footer btn {{getBtnClass(provider._source.type)}} btn-flat pull-right btn-block" ng-click="showProfile(provider._source.bid)">  View Profile <i class="fa fa-arrow-circle-right"></i></button>
                     </div>
                 </div>
                 <!-- /.box -->
@@ -146,7 +146,7 @@
                                 <p class="text-muted" ng-if="provider._source.female">Female</p></td>
                             </tr> <tr>
                             <th>Spoken Languages</th>
-                            <td ng-repeat="provider in compareProviders">{{provider._source.language}}</td>
+                            <td ng-repeat="provider in compareProviders">{{provider._source.language.join(", ")}}</td>
                         </tr> <tr>
                         <th>Location Code </th>
                         <td ng-repeat="provider in compareProviders">{{provider._source.offcode}}</td>
