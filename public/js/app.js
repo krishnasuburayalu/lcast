@@ -281,6 +281,10 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
         if ($scope.specialty_sel != undefined && $scope.specialty_sel != '') {
             $scope.req.specialties = $scope.specialty_sel;
         }
+        if ($scope.specialty_sel1 != undefined && $scope.specialty_sel1 != '') {
+            $scope.req.specialties = $scope.specialty_sel1;
+        }
+
         $scope.loading = true;
         $http.get('/profile/search', {
             "params": $scope.req

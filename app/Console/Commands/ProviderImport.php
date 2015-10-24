@@ -68,7 +68,7 @@ class ProviderImport extends Command {
         $count = 0;
         $interpreter->addObserver(function (array $row) use ($fields, &$response, &$count) {
             $data = array_combine($fields, $row);
-            if (array_get($data, 'bid', FALSE) !== FALSE && array_get($data, 'command', FALSE) !== FALSE && array_get($data, 'type', FALSE) == 'S') {
+            if (array_get($data, 'bid', FALSE) !== FALSE && array_get($data, 'command', FALSE) !== FALSE) {
                 $data['processed_date'] = ProfileHelper::get_today_date();
                 switch (array_get($data, 'command', 'A')) {
                     case 'A':

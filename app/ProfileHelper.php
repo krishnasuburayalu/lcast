@@ -147,7 +147,6 @@ class ProfileHelper
         $data['specialties'] = array();
         $data['hospitals'] = array();
         if (array_get($data, 'type', NULL) == 'D') {
-            
             $specialties = explode(' ', array_get($data, 'product_specialty_hospital', array()));
             foreach ($specialties as $specialty) {
                 $flg = strtoupper(substr($specialty, 0, 1));
@@ -161,17 +160,19 @@ class ProfileHelper
                 }
             }
         }
-        
         if (array_get($data, 'type', NULL) == 'S') {
-            $data['specialties'] = explode(',', array_get($data, 'specialty', array()));
+            if(array_get($data, 'specialty', '') == 'HOSPITAL' || array_get($data, 'specialty', '') == 'HOSPITAL-NONPAR'){
+                $data['type'] ='H';
+                $data['specialties'] = array();
+            }else{
+                $data['specialties'] = explode(',', array_get($data, 'specialty', array()));
+            }
         }
-        
         $data['specialties_auto'] = $data['specialties'];
         $data['specialties_suggest'] = $data['specialties'];
         unset($data['product_specialty_hospital'], $data['specialty']);
         return $data;
     }
-    
     public static function format_network($data = NULL) {
         if (!$data || !array_get($data, 'bid', NULL)) {
             return $data;

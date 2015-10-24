@@ -57,7 +57,4 @@ class ProviderIndexRebuild extends Command {
         ProfileHelper::add_index();
         $this->info('Done.');
 	}
-
-
-	 
 }

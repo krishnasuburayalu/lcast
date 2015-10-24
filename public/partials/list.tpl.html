@@ -9,13 +9,13 @@
                     <li>Try different keywords.</li>
                     <li>Try more general keywords.</li>
                 </ul>
-                 <strong>Did you mean? </strong>
+                <strong>Did you mean? </strong>
                 <ul class=" " >
-                
+
                     <li ng-repeat="suggest in suggestion">
                     <a href="#" class="text-light-blue"><b>{{suggest.text}}</b></a></li>
                 </ul>
-                
+
             </div>
         </div>
         <div class="col-md-12" ng-if="total != 0">
@@ -27,7 +27,8 @@
                     <span class="label label-default" ng-if="req.gender">Gender : {{req.gender}}</span>
                     <span class="label label-default" ng-if="specialty_sel">Specialty: {{specialty_sel}} </span>
                     <span class="label label-default" ng-if="req.network">Network : {{req.network}}</span>
-                    <span class="label label-default" ng-if="req.Language">Language : {{req.language}}</span>
+                    <span class="label label-default" ng-if="req.language">Language : {{req.language}}</span>
+                    <span class="label label-default" ng-if="req.county">County : {{req.county}}</span>
                 </div>
             </div>
             <div class="row">
@@ -57,7 +58,8 @@
                     <div class="box box-body  box-profile box-header with-border box-primary">
                         <img ng-if="provider._source.gender == 'male'"  alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/male.jpg" class="profile-user-img img-responsive img-circle dhf-profile-user-img "/>
                         <img ng-if="provider._source.gender == 'female'"   alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/female.jpg" class="profile-user-img img-responsive img-circle dhf-profile-user-img "/>
-                        <img ng-if="provider._source.type == 'S'" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/hospital.jpg" class="profile-user-img img-responsive img-circle dhf-profile-user-img " />
+                        <img ng-if="provider._source.type == 'H'" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/hospital.jpg" class="profile-user-img img-responsive img-circle dhf-profile-user-img " />
+                        <img ng-if="provider._source.type == 'S'" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/ohs.jpg" class="profile-user-img img-responsive img-circle dhf-profile-user-img " />
                         <div class=" dhf-widget-user-header">
                             <p class=" text-center ">
                             <a href="" class="text-center" ng-click="showProfile(provider._source.bid)"><strong> {{ provider._source.name }}
@@ -196,7 +198,8 @@
         <div class="widget-user-image" ng-switch="details.gender">
             <img ng-switch-when="male" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/male.jpg" class="img-circle" />
             <img ng-switch-when="female" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/female.jpg" class="img-circle" />
-            <img ng-if="details.type == 'S'" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/hospital.jpg" class="profile-user-img img-responsive img-circle dhf-profile-user-img " />
+            <img ng-if="details.type == 'H'" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/hospital.jpg" class="profile-user-img img-responsive img-circle dhf-profile-user-img " />
+            <img ng-if="details.type == 'S'" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/ohs.jpg" class="profile-user-img img-responsive img-circle dhf-profile-user-img " />
         </div>
         <div class="box-footer">
             <div class="row">
@@ -226,10 +229,8 @@
                 <!-- /.col -->
                 <div class="col-sm-2">
                     <div class="description-block">
-
                         <span  ng-if="details.omt1" class="label  bg-light-blue">OMNIA TIER1</span>
                         <span ng-if="details.omt2" class="label bg-gray">TIER2</span>
-
                     </div>
                     <!-- /.description-block -->
                 </div>
