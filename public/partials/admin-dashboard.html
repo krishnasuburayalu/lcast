@@ -1,0 +1,267 @@
+<!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        Dashboard
+        <small>Control panel</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Dashboard</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3>{{aggregations['type'][0]['count']}}</h3>
+              <p>Doctors</p>
+            </div>
+            <div class="icon">
+              <i class="fa  fa-stethoscope"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3>{{aggregations['omt1'][0]['count']}}</h3>
+              <p>OMNIA Tier1</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-heart"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3>{{aggregations['type'][2]['count']}}</h3>
+
+              <p>Hospitals</p>
+            </div>
+            <div class="icon">
+              <i class="fa  fa-h-square"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3>{{aggregations['type'][1]['count']}}</h3>
+
+              <p>Ancillaries</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-ambulance"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+      </div>
+      <!-- /.row -->
+      <!-- Main row -->
+      <div class="row">
+        <!-- Left col -->
+        <section class="col-lg-4 connectedSortable">
+          <!-- Custom tabs (Charts with tabs)-->
+            <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title"># by Network</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="chart">
+                <canvas id="barChart" style="height:230px"></canvas>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+
+           <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Top 10 Specialties</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="chart">
+                <canvas id="barChartspecialties" style="height:430px"></canvas>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+           <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Top 10 Languages</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="chart">
+                <canvas id="barChartLanguages" style="height:230px"></canvas>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+
+       </section>
+        <!-- /.Left col -->
+        <!-- right col (We are only adding the ID to make the widgets sortable)-->
+        <section class="col-lg-4 connectedSortable">
+
+           <div class="box box-solid">
+            <div class="box-header  ">
+              <h3 class="box-title">Distributions by Provider Type</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <canvas id="pieChart" style="height:230px"></canvas>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+
+           <div class="info-box bg-purple" >
+            <span class="info-box-icon"><i class="fa fa-male"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Male Doctors</span>
+              <span class="info-box-number">{{aggregations['gender'][1]['count']}}</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 40%"></div>
+              </div>
+                  <span class="progress-description">
+                    40% in total
+                  </span>
+            </div>
+          </div>
+           <div class="info-box bg-maroon">
+            <span class="info-box-icon"><i class="fa fa-female"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">FeMale Doctors</span>
+              <span class="info-box-number">{{aggregations['gender'][2]['count']}}</span>
+
+              <div class="progress">
+                <div class="progress-bar" style="width: 40%"></div>
+              </div>
+                  <span class="progress-description">
+                     40% in total
+                  </span>
+            </div>
+          </div>
+
+           <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Distributions by State</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="chart">
+                <canvas id="pieChartState" style="height:230px"></canvas>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+         
+
+
+        </section>
+        <section class="col-lg-4 connectedSortable">
+            <!-- TABLE: LATEST ORDERS -->
+          <div class="box box-solid">
+            <div class="box-header">
+              <h3 class="box-title">Distributions by Group</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <tbody>
+                  <tr  ng-repeat="gn in aggregations.group_name" >
+                    <td><a href="#">{{gn.term}}</a></td>
+                    <td><span class="label   bg-purple">{{gn.count}}</span></td>
+                  </tr>
+                   
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /.box -->
+
+            <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">Top 10 County</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="chart">
+                <canvas id="barChartCounty" style="height:230px"></canvas>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+        </section>
+        <!-- right col -->
+      </div>
+      <!-- /.row (main row) -->
+
+    </section>

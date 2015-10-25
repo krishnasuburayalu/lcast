@@ -12,9 +12,8 @@
 */
 
 //Route::get('/', ['as' => 'home', 'uses' => 'WelcomeController@index']);
-Route::get('/', function () {
-    return view('admin_template');
-});
+
+
 
 //LCAST URL Params
 Route::get('profile/bulk', 'ProfileController@add_bulk');
@@ -28,14 +27,18 @@ Route::get('profile/suggest', 'ProfileController@suggest');
 Route::get('profile/import', 'ProfileController@import');
 Route::get('profile/rebuild', 'ProfileController@rebuild_index');
 
-//Route::get('profile/{id}/album/new', 'ProfileController@add_new_album');
-//Route::get('profile/{id}/album/{album_id}', 'ProfileController@show_album');
 Route::get('geo/show/{id}', 'GeoController@show');
 Route::get('geo/delete/{id}', 'GeoController@delete');
 Route::get('geo/search', 'GeoController@search');
 Route::get('geo/facets', 'GeoController@facets');
 Route::get('geo/import', 'GeoController@import');
 Route::get('geo/rebuild', 'GeoController@rebuild_index');
-
  
+
+Route::get('admin/dashboard', 'Admin\AdminController@dashboard');
+
+Route::get('/', function () {
+    return view('home_template');
+});
+
 
