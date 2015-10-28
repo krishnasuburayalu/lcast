@@ -1,7 +1,8 @@
 var RES_SIZE = 12;
 var RES_SKIP = 0;
 var PAGE_SIZE = RES_SIZE;
-var PLANS = [{
+var PLANS = [
+{
     'val': 'OMT1,OMT2',
     'name': 'OMNIA'
 }, {
@@ -203,6 +204,7 @@ dhf.controller("SearchCtrl", function($scope, $http, $stateParams, $location) {
     $scope.page = 1;
     $scope.showModal = false;
     $scope.compareModal = false;
+    $scope.selectionBID = [];
     $scope.pagination = {
         'total': 0,
         'current_page': 1,
@@ -275,6 +277,7 @@ $scope.getBoxClass = function(type) {
         if (page != undefined) {
             $scope.page = parseInt(page);
         }
+        $scope.selectionBID = [];
         $scope.req.skip = ($scope.page * RES_SIZE) - RES_SIZE;
         $scope.req.size = RES_SIZE;
         $scope.suggestion = [];
@@ -285,7 +288,7 @@ $scope.getBoxClass = function(type) {
             $scope.req.zip = $scope.location.split(' - ')[1];
         }
         if ($scope.name != undefined && $scope.name != '') {
-            $scope.req.name_raw = $scope.name;
+            $scope.req.name = $scope.name;
         }
         if ($scope.specialty_sel != undefined && $scope.specialty_sel != '') {
             $scope.req.specialties = $scope.specialty_sel;
@@ -488,12 +491,12 @@ $scope.getBoxClass = function(type) {
         }
     };
 
-    $scope.compareProfile = function(ids) {
+    $scope.compareProfile = function() {
         $scope.profileShow = 'show';
-        if (ids == undefined || ids == '') {
+        if ($scope.selectionBID == undefined || $scope.selectionBID.size == 0 ) {
             return false;
         }
-        id = ids.join(',');
+        id = $scope.selectionBID.join(',');
         url = '/profile/search?bid=' +  id;
         $http.get(url).
         success(function(data, status) {
