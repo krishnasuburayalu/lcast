@@ -40,7 +40,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body class="sidebar-mini skin-yellow-light fixed" >
+    <body class="sidebar-mini skin-yellow-light fixed sidebar-collapse" >
         <div class="wrapper">
             <!-- Main Header -->
             <header class="main-header">

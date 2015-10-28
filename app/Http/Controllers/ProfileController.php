@@ -160,7 +160,7 @@ class ProfileController extends Controller
         $q = \Input::get('q', '');
         $size = (int)\Input::get('size', 10);
         $skip = (int)\Input::get('skip', 0);
-        $fields = \Input::get('fields', 'bid,type,network,firstname,lastname,name,phone,county,city,address1,address2,state,zip,zip4,phone,degree,language,mi,state,gender,omt1,omt2,specialties,location');
+        $fields = \Input::get('fields', 'bid,type,network,firstname,lastname,name,phone,county,city,address1,address2,state,zip,zip4,phone,degree,language,mi,state,gender,omt1,omt2,specialties,location,group_name');
         $zip = \Input::get('zip', 0);
         $radius = (int)\Input::get('radius', 10);
         $params = ProfileHelper::get_elastic_config();

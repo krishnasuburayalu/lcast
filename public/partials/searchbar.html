@@ -5,7 +5,7 @@
             <div class="form-group">
                 <label>Doctor/Hospital Name </label>
                 <!--input class="form-control my-colorpicker1 colorpicker-element" ng-model="req.lastname" type="text"-->
-                <autocomplete ng-model="name" data="names" on-type="updateName" attr-input-class="form-control my-colorpicker1 colorpicker-element"></autocomplete>
+                <autocomplete ng-model="name" data="names" on-type="updateName" attr-input-class="form-control input-sm my-colorpicker1 colorpicker-element"></autocomplete>
             </div>
         </div>
         <!-- /.col -->
@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <label>Specialty / Service</label>
-                    <autocomplete ng-model="specialty_sel" data="specialties" on-type="updateSpecialty" attr-input-class="form-control my-colorpicker1 colorpicker-element"></autocomplete>
+                    <autocomplete ng-model="specialty_sel" data="specialties" on-type="updateSpecialty" attr-input-class="form-control input-sm my-colorpicker1 colorpicker-element"></autocomplete>
                 </div>
             </div>
         </div>
@@ -22,7 +22,16 @@
             <div class="row">
                 <div class="col-xs-12">
                     <label>Localtion</label>
-                    <autocomplete ng-model="location" data="locations" on-type="updateLocation" attr-input-class="form-control my-colorpicker1 colorpicker-element"></autocomplete>
+                    <autocomplete ng-model="location" data="locations" on-type="updateLocation" attr-input-class="form-control input-sm my-colorpicker1 colorpicker-element"></autocomplete>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="row">
+                <div class="col-xs-12">
+                    <label>Group</label>
+                    <autocomplete ng-model="group" data="groups" on-type="updateGroup" attr-input-class="form-control input-sm my-colorpicker1 colorpicker-element"></autocomplete>
                 </div>
             </div>
         </div>

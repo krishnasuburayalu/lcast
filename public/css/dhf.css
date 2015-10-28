@@ -32,6 +32,10 @@ color: #fff;
   padding:0.4em;
 }
 
+.dhf-pad-0{
+  padding: 0px;
+}
+
 .autocomplete ul{
   position: absolute;
   left: 0;

@@ -142,12 +142,15 @@ var buildpieChart = function(data, ele) {
 }
 
 var  getRandomColor = function() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
+    /* var letters = '0123456789ABCDEF'.split('');
+    
+   var color = '#';
     for (var i = 0; i < 6; i++ ) {
         color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+    }*/
+    var colors=['#3c8dbc','#00c0ef','#00a65a','#f39c12','#f56954','#d2d6de','#001F3F','#39CCCC','#605ca8','#ff851b','#D81B60','#111111']
+    return colors[Math.floor(Math.random() * 12)];4
+    //return 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
 }
 
 
@@ -159,12 +162,13 @@ var buildbarchart = function(data, ele) {
         src_data.labels.push(data[i]['term']);
         src_data.data.push(data[i]['count']);
     }
+    var clr =  getRandomColor();
     var areaChartData = {
         labels: src_data.labels,
         datasets: [{
             label: "Digital Goods",
-            fillColor: "#00c0ef",
-            strokeColor: "#00c0ef",
+            fillColor: clr,
+            strokeColor: clr,
             pointColor: "#3c8dbc",
             pointStrokeColor: "rgba(60,141,188,1)",
             pointHighlightFill: "#fff",
