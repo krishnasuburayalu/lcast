@@ -103,7 +103,6 @@ var DEFAULT_PARAM = {
 };
  var dhf = angular.module("dhf", ['autocomplete', 'ngRoute', 'ngAnimate', 'ui.router','bw.paging']);
 var list_load = false;
- 
 dhf.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('search');
     $stateProvider.state('home', {
@@ -277,25 +276,24 @@ $scope.getBoxClass = function(type) {
         if (page != undefined) {
             $scope.page = parseInt(page);
         }
-        $scope.selectionBID = [];
+
         $scope.req.skip = ($scope.page * RES_SIZE) - RES_SIZE;
         $scope.req.size = RES_SIZE;
         $scope.suggestion = [];
         $scope.req.name_raw = null;
         $scope.req.zip = null;
-        $scope.req.specialties = null;
+       // $scope.req.specialties = null;
         if ($scope.location != undefined && $scope.location != '') {
             $scope.req.zip = $scope.location.split(' - ')[1];
         }
         if ($scope.name != undefined && $scope.name != '') {
             $scope.req.name = $scope.name;
         }
+
         if ($scope.specialty_sel != undefined && $scope.specialty_sel != '') {
             $scope.req.specialties = $scope.specialty_sel;
         }
-        if ($scope.specialty_sel1 != undefined && $scope.specialty_sel1 != '') {
-            $scope.req.specialties = $scope.specialty_sel1;
-        }
+
          if ($scope.group_sel != undefined && $scope.group_sel != '') {
             $scope.req.group_name = $scope.group_sel;
         }
@@ -369,7 +367,7 @@ $scope.getBoxClass = function(type) {
     };
     // gives another movie array on change
     $scope.updateLocation = function(typed) {
-        if (typed == undefined || typed.length < 3) {
+        if (typed == undefined ) {
             $scope.locations = [];
             return false;
         }
@@ -393,7 +391,7 @@ $scope.getBoxClass = function(type) {
     };
 
      $scope.updateGroup = function(typed) {
-         if (typed == undefined || typed.length < 3) {
+         if (typed == undefined) {
             $scope.names = [];
             return false;
         }
@@ -420,7 +418,7 @@ $scope.getBoxClass = function(type) {
 
     // gives another movie array on change
     $scope.updateName = function(typed) {
-        if (typed == undefined || typed.length < 3) {
+        if (typed == undefined) {
             $scope.names = [];
             return false;
         }
@@ -445,7 +443,7 @@ $scope.getBoxClass = function(type) {
         });
     };
     $scope.updateSpecialty = function(typed) {
-        if (typed == undefined || typed.length < 3) {
+        if (typed == undefined) {
             $scope.names = [];
             return false;
         }
@@ -477,17 +475,15 @@ $scope.getBoxClass = function(type) {
         return result;
     };
 
-     $scope.selectionBID = [];
+
     // toggle selectionBID for a given Provider
-    $scope.toggleSelection = function toggleSelection(bid) {
+    $scope.toggleSelection = function(bid) {
         var idx = $scope.selectionBID.indexOf(bid);
         // is currently selected
-        if (idx > -1) {
-            $scope.selectionBID.splice(idx, 1);
-        }
-        // is newly selected
-        else {
+        if (idx === -1) {
             $scope.selectionBID.push(bid);
+        } else {
+            $scope.selectionBID.splice(idx, 1);
         }
     };
 
@@ -496,8 +492,8 @@ $scope.getBoxClass = function(type) {
         if ($scope.selectionBID == undefined || $scope.selectionBID.size == 0 ) {
             return false;
         }
-        id = $scope.selectionBID.join(',');
-        url = '/profile/search?bid=' +  id;
+        id = $scope.selectionBID.join(' ');
+        url = '/profile/search?&fields=group_name,specialties,board_certified,name,state,omt2,omt1,address1,phone,fax,zip,zip4,type,city,degree,county,gender,language,bid&bid=' +  id;
         $http.get(url).
         success(function(data, status) {
             $scope.error = data.error;
@@ -557,8 +553,8 @@ dhf.animation('.reveal-animation', function() {
         }
     }
 })
- 
- 
+
+
 
 dhf.directive('akModal', function() {
     return {

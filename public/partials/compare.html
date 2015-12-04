@@ -13,7 +13,7 @@
                       <th> </th>
                       <td ng-repeat="provider in providers">
                       	<div  ng-switch="provider._source.male"><img ng-switch-when="true" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/male.jpg" class="profile-user-img img-responsive img-circle"/> <img ng-switch-when="false" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/female.jpg" class="profile-user-img img-responsive img-circle"/>  </div>
-	    				<h4 class=" text-center"><a href="#/profile/{{page}}/{{ provider._source.bid }}"><strong>{{ provider._source.lastname }}</strong>, {{ provider._source.firstname }} {{ provider._source.mi }} </a></h4>
+	    				<h4 class=" text-center"><a href="#/profile/{{page}}/{{ provider._source.bid }}"><strong>{{ provider._source.lastname }}</strong>, {{ provider._source.firstname }} {{ provider._source.mi }}, {{provider._source.degree}}</a></h4>
                       </td>
                     </tr>
                     <tr>
@@ -24,8 +24,7 @@
                      <tr>
                       <th>Gender</th>
                       <td ng-repeat="provider in providers">
-                      <p class="text-muted" ng-if="provider._source.male">Male</p>
-					<p class="text-muted" ng-if="provider._source.female">Female</p></td>
+                      {{provider._source.gender}}</td>
 
                     </tr> <tr>
                       <th>Spoken Languages</th>
@@ -35,27 +34,15 @@
                       <th>Location Code </th>
                       <td ng-repeat="provider in providers">{{provider._source.offcode}}</td>
 
-                    </tr> <tr>
-                      <th>National Provider Identifier</th>
-                      <td ng-repeat="provider in providers">{{provider._source.nationalproviderid}}</td>
+                    </tr>   <tr>
+                      <th>Address</th>
+                      <td ng-repeat="provider in providers">{{provider._source.address1}}</td>
 
-                    </tr> <tr>
-                      <th>Board Certified</th>
-                      <td ng-repeat="provider in providers">{{provider._source.board_certified}}</td>
-
-                    </tr> <tr>
-                      <th>Education</th>
-                      <td ng-repeat="provider in providers">{{provider._source.degree}}</td>
-
-                    </tr> <tr>
+                    </tr>   <tr>
                       <th>Group Affiliation</th>
                       <td ng-repeat="provider in providers">{{provider._source.group_name}}</td>
 
-                    </tr> <tr>
-                      <th>Notes</th>
-                      <td ng-repeat="provider in providers">{{provider._source.note}}</td>
-
-                    </tr> 
+                    </tr>
                     <tr>
                       <th>Practice Status</th>
                       <td ng-repeat="provider in providers">{{provider._source.acpt_new_pat}}</td>

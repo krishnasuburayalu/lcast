@@ -68,14 +68,16 @@ color: #fff;
   background: #666;
   color: #fff;
 }
-/* Have to set height explicity on ui-view 
+/* Have to set height explicity on ui-view
 to prevent collapsing during animation*/
 .well[ui-view]{
- height: 65px; 
+ height: 65px;
 }
 
 .ui-view-container {
   position: relative;
 }
 
- 
+ .modal-content{
+   background-color: #ecf0f5;
+ }

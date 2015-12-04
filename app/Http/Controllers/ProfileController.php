@@ -20,14 +20,14 @@ use Goodby\CSV\Import\Standard\LexerConfig;
 
 class ProfileController extends Controller
 {
-    
+
     /**
      * Make sure the user is authenticated.
      *
      */
     public function __construct() {
     }
-    
+
     /**
      * landing controller routine
      *
@@ -36,14 +36,14 @@ class ProfileController extends Controller
         $user = BCUser::find(5);
         dd($user);
     }
-    
+
     /**
      * Indexing by profile id - mysql id
      *
      */
-    
+
     public function import() {
-        
+
         // Temporarily increase memory limit to 256MB
         ini_set('memory_limit', '512M');
         ini_set('max_execution_time', 60);
@@ -51,7 +51,7 @@ class ProfileController extends Controller
         $config = new LexerConfig();
         $config->setDelimiter("\t");
         $lexer = new Lexer($config);
-        
+
         $interpreter = new Interpreter();
         $fields = array('COMMAND','TYPE','BID','GROUP_NAME','NAME','ADDRESS1','ADDRESS2','CITY','STATE','ZIP','PHONE','FAX','LASTNAME','FIRSTNAME','MI','DEGREE','JCode','NASCO','NOTE','JCODE_PANEL_STATUS','JCODE_PANEL_CODE','LANGUAGE','SSN','TAXID','COUNTY','DataID','PRODUCT_SPECIALTY_HOSPITAL','MGCN','TRAD','STNY','NJPL','MCBL','HDTC','HDDC','HDDP','HDDT','MCNY','VSTANY','NYEP','NYPP','ADVN','ACO','PCMH','MALE','FEMALE','Mon_open1','Mon_close1','Mon_open2','Mon_close2','Tue_open1','Tue_close1','Tue_open2','Tue_close2','Wed_open1','Wed_close1','Wed_open2','Wed_close2','Thu_open1','Thu_close1','Thu_open2','Thu_close2','Fri_open1','Fri_close1','Fri_open2','Fri_close2','Sat_open1','Sat_close1','Sat_open2','Sat_close2','Sun_open1','Sun_close1','Sun_open2','Sun_close2','NATIONALPROVIDERID','NET_START_DATE','DENTEMAX','LUCENT','OFFCODE','ANCTEST','HOSPCODE','HOSP','RPQ','HORIZON_DENTAL_EPO','BOARD_CERTIFIED','SPECIALTY','LATITUDE','LONGITUDE','EHR','QRP','NCQA','HNJH_IND','PRACTICE_LIMITATION','ACPT_NEW_PAT','MCR_RATING','MBPC','BRNB','SHMC','CCX','OMT1','OMT2','OAT1','OST2','OST1','OAT2','OMT1_EFF_DT','OMT1_END_DT','OMT2_EFF_DT','OMT2_END_DT','OAT1_EFF_DT','OAT1_END_DT','OST2_EFF_DT','OST2_END_DT','OST1_EFF_DT','OST1_END_DT','OAT2_EFF_DT','OAT2_END_DT','TRAD_EFF_DT','TRAD_END_DT','MGCN_EFF_DT','MGCN_END_DT','MCBL_EFF_DT','MCBL_END_DT','ADVN_EFF_DT','ADVN_END_DT','ACO_EFF_DT','ACO_END_DT','PCMH_EFF_DT','PCMH_END_DT','MBPC_EFF_DT','MBPC_END_DT','BRNB_EFF_DT','BRNB_END_DT','SHMC_EFF_DT','SHMC_END_DT');
         $fields =array_map('strtolower', $fields);
@@ -88,12 +88,12 @@ class ProfileController extends Controller
         $lexer->parse(storage_path() . '/source_dir/MDM_COMMERCIALFULL-20150730112521.csv', $interpreter);
         return \Response::json(array('error' => false, 'response' => $response), 200);
     }
-    
+
     /**
      * Indexing by profile id - mysql id
      *
      */
-    
+
     public function add($id) {
         $response = array();
         $user = BCUser::find($id);
@@ -102,7 +102,7 @@ class ProfileController extends Controller
         $user->experiences = $user->experiences()->get(['type', 'role', 'title', 'from_date', 'to_date', 'description'])->toArray();
         $user->profile = $user->profile()->get(['name', 'gender', 'dob', 'language', 'state', 'country', 'capability', 'avatar', 'about_me'])->toArray();
         $user->qualifications = $user->qualifications()->get(['type', 'title', 'from_date', 'to_date', 'description'])->toArray();
-        
+
         //Push into queue
         $queue_message['action'] = ProfileHelper::QUEUE_METHOD_PUT;
         $queue_message['data'] = $user->toArray();
@@ -113,12 +113,12 @@ class ProfileController extends Controller
         }
         return \Response::json(array('error' => false, 'response' => $response), 200);
     }
-    
+
     /**
      * Get profile info from elasticsearch by profile id
      *
      */
-    
+
     public function update($id) {
         $params = ProfileHelper::get_elastic_config();
         $params['id'] = $id;
@@ -132,13 +132,13 @@ class ProfileController extends Controller
         $this->push_into_queue($queue_message);
         return \Response::json(ProfileHelper::get_success_response(), 200);
     }
-    
+
     public function rebuild_index() {
         ProfileHelper::delete_index();
         ProfileHelper::add_index();
         exit;
     }
-    
+
     public function show($id) {
         $params = ProfileHelper::get_elastic_config();
         $params['id'] = $id;
@@ -150,12 +150,12 @@ class ProfileController extends Controller
         $results = \Es::get($params);
         return \Response::json(array('error' => false, 'response' => array_get($results, '_source')), 200);
     }
-    
+
     /**
      * Search profiles by Query in the Lucene query string syntax
      *
      */
-    
+
     public function search() {
         $q = \Input::get('q', '');
         $size = (int)\Input::get('size', 10);
@@ -166,14 +166,14 @@ class ProfileController extends Controller
         $params = ProfileHelper::get_elastic_config();
         if ($fields == '') {
             $params['_source'] = TRUE;
-        } 
+        }
         else {
             $params['_source_include'] = $fields;
         }
         $filter = array();
         $params['size'] = $size;
         $params['from'] = $skip;
-        $params['body']['sort'] = array('name_raw' => array("order" => "asc"));
+        $params['body']['sort'] = ProfileHelper::build_sorting();//array('name_raw' => array("order" => "asc"));
         if ($zip != 0) {
             $filter['and'] = array();
             $zip_cordinates = GeoHelper::get_geocode($zip, TRUE);
@@ -182,7 +182,7 @@ class ProfileController extends Controller
         }
         $params['body']['query']['filtered']["filter"] = $filter;
         $params['body']['query']['filtered']["query"]['bool']['must'] = ProfileHelper::build_filters();
-        
+
         //print_r($params['body']);exit;
         $results = \Es::search($params);
         $count = array_get($results, 'hits.total', 0);
@@ -196,13 +196,13 @@ class ProfileController extends Controller
             }
             $results['hits']['hits'] = $newresults;
         }
-        
+
         if ($count <= 0) {
             return \Response::json(array('error' => true, 'response' => array('error' => true, 'message' => 'profile not found.'), 'query' => $params), 200);
         }
         return \Response::json(array('error' => false, 'response' => $results['hits']), 200);
     }
-    
+
     public function suggest() {
         $q = \Input::get('q', '');
         $field = \Input::get('field', 'name_suggest');
@@ -213,19 +213,19 @@ class ProfileController extends Controller
         $suggestons = array_get($results, 'did-you-mean.0.options', 0);
         return \Response::json(array('error' => false, 'response' => $suggestons), 200);
     }
-    
+
     /**
      * delete profile info from elasticsearch by profile id
      *
      */
-    
+
     public function delete($id) {
         $queue_message['action'] = ProfileHelper::QUEUE_METHOD_DELETE;
         $queue_message['data'] = array('id' => $id);
         $this->push_into_queue($queue_message);
         return \Response::json(ProfileHelper::get_success_response(), 200);
     }
-    
+
     public function facets() {
         $q = \Input::get('q', '');
         $size = (int)\Input::get('size', 10);
@@ -258,7 +258,7 @@ class ProfileController extends Controller
         }
         return \Response::json(array('error' => false, 'response' => $results['facets']), 200);
     }
-    
+
     public function push_into_queue($profile_params) {
         $this->dispatch(new QueueProfile($profile_params));
     }

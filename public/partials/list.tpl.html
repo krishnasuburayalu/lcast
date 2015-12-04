@@ -118,58 +118,53 @@
             </div>
             <div class="modal-body">
                 <h3 class="box-title">Compare {{comparTotal}} providers</h3>
-                <div class="box-body table-responsive no-padding">
-                    <table class="table table-hover table-bordered table-striped">
+                <div class="box box-primary table-responsive no-padding">
+                    <table class="table   table-bordered ">
                         <tbody>
                             <tr >
-                                <th> </th>
+                                <th style="width: 180px"> </th>
                                 <td ng-repeat="provider in compareProviders">
                                     <div class="widget-user-image text-center" ng-switch="provider._source.gender">
-                                        <img ng-switch-when="male" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/male.jpg" class="img-circle" />
-                                    <img ng-switch-when="female" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/female.jpg" class="img-circle" /> </div>
-                                    <h4 class=" text-center"><a href="#/profile/{{page}}/{{ provider._source.bid }}"><strong>{{ provider._source.lastname }}</strong>, {{ provider._source.firstname }} {{ provider._source.mi }} </a></h4>
+                                        <img ng-switch-when="male" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/male.jpg" class="profile-user-img img-responsive img-circle dhf-profile-user-img" />
+                                    <img ng-switch-when="female" alt="User Avatar" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/female.jpg" class="profile-user-img img-responsive img-circle dhf-profile-user-img" /> </div>
+                                    <h4 class=" text-center"><a href="#/profile/{{page}}/{{ provider._source.bid }}"><strong>{{ provider._source.name }}</strong>, {{provider._source.degree}} </a></h4>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Tier Status</th>
-                                <td ng-repeat="provider in compareProviders">
+                                <td ng-repeat="provider in compareProviders" class="text-center">
                                     <img class="text-center" ng-if="provider._source.omt1" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tier-one.png" typeof="foaf:Image" />
                                 <img class="text-center" ng-if="provider._source.omt2" src="http://doctorfinder.horizonblue.com/sites/all/modules/custom/opd/images/tiertwo.png" typeof="foaf:Image" /></ </td>
                             </tr>
                             <tr>
                                 <th>Spacilty</th>
-                                <td ng-repeat="provider in compareProviders">{{ provider._source.specialties.join(", ")}}</td>
+                                <td ng-repeat="provider in compareProviders" class="text-center">{{ provider._source.specialties.join(", ")}}</td>
                             </tr>
                             <tr>
                                 <th>Gender</th>
-                                <td ng-repeat="provider in compareProviders">
-                                    <p class="text-muted" ng-if="provider._source.male">Male</p>
-                                <p class="text-muted" ng-if="provider._source.female">Female</p></td>
+                                <td ng-repeat="provider in compareProviders" class="text-center">{{provider._source.gender}}</td>
                             </tr> <tr>
                             <th>Spoken Languages</th>
-                            <td ng-repeat="provider in compareProviders">{{provider._source.language.join(", ")}}</td>
+                            <td ng-repeat="provider in compareProviders" class="text-center">{{provider._source.language}}</td>
                         </tr> <tr>
-                        <th>Location Code </th>
-                        <td ng-repeat="provider in compareProviders">{{provider._source.offcode}}</td>
+                        <th>Phone / FAX </th>
+                        <td ng-repeat="provider in compareProviders" class="text-center">{{provider._source.phone}} / {{provider._source.fax}} </td>
                     </tr> <tr>
-                    <th>National Provider Identifier</th>
-                    <td ng-repeat="provider in compareProviders">{{provider._source.nationalproviderid}}</td>
+                    <th>Address</th>
+                    <td ng-repeat="provider in compareProviders" class="text-center">{{ provider._source.address1 }} ,  {{ provider._source.city }}, {{ provider._source.state }}  {{ provider._source.zip }}-{{ provider._source.zip4 }}</td>
                 </tr> <tr>
                 <th>Board Certified</th>
-                <td ng-repeat="provider in compareProviders">{{provider._source.board_certified}}</td>
+                <td ng-repeat="provider in compareProviders" class="text-center">{{provider._source.board_certified}}</td>
             </tr> <tr>
             <th>Education</th>
-            <td ng-repeat="provider in compareProviders">{{provider._source.degree}}</td>
+            <td ng-repeat="provider in compareProviders" class="text-center">{{provider._source.degree}}</td>
         </tr> <tr>
         <th>Group Affiliation</th>
-        <td ng-repeat="provider in compareProviders">{{provider._source.group_name}}</td>
-    </tr> <tr>
-    <th>Notes</th>
-    <td ng-repeat="provider in compareProviders">{{provider._source.note}}</td>
-</tr>
+        <td ng-repeat="provider in compareProviders" class="text-center">{{provider._source.group_name}}</td>
+    </tr>
 <tr>
     <th>Practice Status</th>
-    <td ng-repeat="provider in compareProviders">{{provider._source.acpt_new_pat}}</td>
+    <td ng-repeat="provider in compareProviders" class="text-center">{{provider._source.acpt_new_pat}}</td>
 </tr>
 <tr>
     <th></th>
@@ -245,7 +240,7 @@
 <div class="col-md-12">
     <!-- Profile Image -->
     <div class="box box-primary">
-        <div class="box-header bg-light-blue-active">
+        <div class="box-header with-border">
             <h3 class="box-title">Plans Accepted</h3>
         </div>
         <!-- /.box-header -->
@@ -259,7 +254,7 @@
 <div class="col-md-12">
     <!-- Profile Image -->
     <div class="box box-primary">
-        <div class="box-header bg-light-blue-active">
+        <div class="box-header with-border">
             <h3 class="box-title">Doctor Details</h3>
         </div>
         <!-- /.box-header -->
