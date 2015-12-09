@@ -10,7 +10,8 @@
 
                 <ul class="treeview-menu">
                     <li  ng-repeat="gen in aggregations.gender">
-                        <a href="#"> <input type="radio" ng-model="req.gender" ng-change="doSearch(1)" value="{{gen.term}}"/> {{gen.term}} <span class="label label-default pull-right">{{gen.count}}</span> </a>
+                    <div class="checkbox">
+                   <label class="dhf-text-white"> <input type="radio" ng-model="req.gender" ng-change="doSearch(1)" value="{{gen.term}}"/> {{gen.term}} ({{gen.count}})</label></div>
                     </li>
                 </ul>
             </li>
@@ -21,7 +22,8 @@
 
                 <ul class="treeview-menu">
                     <li  ng-repeat="dist in distsnce">
-                        <a href="#">  <input type="radio" ng-model="req.radius" value="{{dist.val}}" ng-change="doSearch(1)"/> {{dist.name}}  </a>
+                        <div class="checkbox">
+                   <label class="dhf-text-white">  <input type="radio" ng-model="req.radius" value="{{dist.val}}" ng-change="doSearch(1)"/> {{dist.name}}  </label></div>
                     </li>
                 </ul>
             </li>
@@ -33,7 +35,8 @@
 
                 <ul class="treeview-menu">
                     <li ng-repeat="spc in aggregations.specialties">
-                        <a href="#">  <input type="radio" ng-model="req.specialties" name="specialty_sel_" ng-change="doSearch(1)" value="{{spc.term}}"/> {{spc.term}}  <span class="label label-default pull-right">{{spc.count}}</span></a>
+                       <div class="checkbox">
+                   <label class="dhf-text-white">  <input type="radio" ng-model="req.specialties" name="specialty_sel_" ng-change="doSearch(1)" value="{{spc.term}}"/> {{spc.term}} ({{spc.count}})</label></div>
                     </li>
                 </ul>
             </li>
@@ -45,7 +48,8 @@
 
                 <ul class="treeview-menu">
                     <li ng-repeat="lan in aggregations.language">
-                        <a href="#">  <input type="radio" ng-model="req.language" name="language" ng-change="doSearch(1)" value="{{lan.term}}"/> {{lan.term}}  <span class="label label-default pull-right">{{lan.count}}</span></a>
+                        <div class="checkbox">
+                   <label class="dhf-text-white">   <input type="radio" ng-model="req.language" name="language" ng-change="doSearch(1)" value="{{lan.term}}"/> {{lan.term}} ({{lan.count}})</label></div>
                     </li>
                 </ul>
             </li>
@@ -57,7 +61,8 @@
 
                 <ul class="treeview-menu">
                     <li ng-repeat="agr in aggregations.county">
-                        <a href="#">  <input type="radio" ng-model="req.county" name="county" ng-change="doSearch(1)" value="{{agr.term}}"/> {{agr.term}}  <span class="label label-default pull-right">{{agr.count}}</span></a>
+                         <div class="checkbox">
+                   <label class="dhf-text-white">  <input type="radio" ng-model="req.county" name="county" ng-change="doSearch(1)" value="{{agr.term}}"/> {{agr.term}} ({{agr.count}})</label></div>
                     </li>
                 </ul>
             </li>

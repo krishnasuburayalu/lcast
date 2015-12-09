@@ -86,3 +86,6 @@ to prevent collapsing during animation*/
 .pagination-dhf > li > span {
   cursor: pointer;
  }
+ .dhf-text-white{
+  color: #fff;
+ }
