@@ -77,7 +77,12 @@ to prevent collapsing during animation*/
 .ui-view-container {
   position: relative;
 }
-
  .modal-content{
    background-color: #ecf0f5;
+ }
+ .pagination-dhf{
+  margin: 0px;
+ }
+.pagination-dhf > li > span {
+  cursor: pointer;
  }

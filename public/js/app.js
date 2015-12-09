@@ -172,6 +172,16 @@ dhf.filter('arrayToCommaSeprated', function() {
         if (input != undefined) return input.join(', ');
     }
 });
+
+dhf.filter('addCommawithSpace', function() {
+    return function(input) {
+        if (input != undefined){
+            var str = input.replace(/,/g, ', ');
+            return str;
+        }
+    }
+});
+
 dhf.filter('filterBIDString', function() {
     return function(input) {
         if (input != undefined) {
@@ -276,10 +286,11 @@ $scope.getBoxClass = function(type) {
         if (page != undefined) {
             $scope.page = parseInt(page);
         }
-
+        $scope.selectionBID = [];
         $scope.req.skip = ($scope.page * RES_SIZE) - RES_SIZE;
         $scope.req.size = RES_SIZE;
         $scope.suggestion = [];
+        $scope.selectionBID = [];
         $scope.req.name_raw = null;
         $scope.req.zip = null;
        // $scope.req.specialties = null;
@@ -488,12 +499,14 @@ $scope.getBoxClass = function(type) {
     };
 
     $scope.compareProfile = function() {
+        $scope.comparTotal = 0;
+        $scope.compareProviders = [];
         $scope.profileShow = 'show';
         if ($scope.selectionBID == undefined || $scope.selectionBID.size == 0 ) {
             return false;
         }
         id = $scope.selectionBID.join(' ');
-        url = '/profile/search?&fields=group_name,specialties,board_certified,name,state,omt2,omt1,address1,phone,fax,zip,zip4,type,city,degree,county,gender,language,bid&bid=' +  id;
+        url = '/profile/search?&fields=group_name,specialties,board_certified,name,state,omt2,omt1,address1,phone,fax,zip,zip4,type,city,degree,county,gender,language,nationalproviderid,bid&nationalproviderid=' + id;
         $http.get(url).
         success(function(data, status) {
             $scope.error = data.error;

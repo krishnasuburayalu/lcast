@@ -14,6 +14,7 @@
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <!-- Ionicons -->
         <link href="{{ asset("/css/ionicons.min.css")}}" rel="stylesheet" type="text/css" />
+        <link href="{{asset("/bower_components/AdminLTE/plugins/select2/select2.min.css")}}" rel="stylesheet" type="text/css">
         <!-- Theme style -->
         <link href="{{ asset("/bower_components/AdminLTE/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css" />
         <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -82,7 +83,7 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <label>Plan</label>
-                                            <select class="form-control select2" ng-model="req.network" ng-options="plan.val as plan.name for plan in plans" ng-change="doSearch(1)">
+                                            <select class="form-control select2" ng-model="req.network" ng-options="plan.val as plan.name for plan in plans">
                                             </select>
 
                                         </div>
@@ -142,6 +143,7 @@
                 <!-- REQUIRED JS SCRIPTS -->
                 <!-- Bootstrap 3.3.2 JS -->
                 <script src="{{ asset ("/bower_components/AdminLTE/bootstrap/js/bootstrap.min.js") }}" type="text/javascript"></script>
+<script src="{{ asset ("/bower_components/AdminLTE/plugins/select2/select2.full.min.js") }}" type="text/javascript"></script>
                 <!-- AdminLTE App -->
                 <!-- AdminLTE App -->
                 <script src="{{ asset ("/bower_components/AdminLTE/dist/js/app.min.js") }}" type="text/javascript"></script>
@@ -149,7 +151,6 @@
                 <script src="{{ asset ("/js/app.js") }}" type="text/javascript"></script>
                 <!--script src="http://maps.googleapis.com/maps/api/js"></script-->
                 <!-- Optionally, you can add Slimscroll and FastClick plugins.
-                                                                                                            Both of these plugins are recommended to enhance the
                 user experience -->
             </body>
         </html>

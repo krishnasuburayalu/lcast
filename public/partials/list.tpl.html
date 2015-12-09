@@ -32,23 +32,18 @@
                     <span class="label label-default" ng-if="group_sel">Group : {{group_sel}}</span>
                 </div>
             </div>
+<hr>
             <div class="row">
                 <div class="col-md-5">
-                    <ul class=" pagination pagination-sm">
-                        <li>
-                            <a href="#"><span class="fa  fa-info-circle"></span> Showing <b>{{total}}</b>  In-Network Doctors
-                            </a>
-                        </li>
-                        <li><a href="" clas="bg-light-blue-active" ng-click="compareProfile()" ><i class="fa fa-files-o"></i> Compare {{selectionBID.size()}} Doctors</a>
-                        </li>
-                    </ul>
-                </div>
+                <p class="lead text-navy">Showing <b>{{total}}</b>  In-Network Providers | <a href="" class="btn btn-primary btn-sm" ng-click="compareProfile()" ><i class="fa fa-files-o"></i> Compare {{selectionBID.size()}} Doctors</a></p>
+</div>
+
                 <div class="col-md-7">
                     <paging
                     page="page"
                     page-size="12"
                     total="total"
-                    ul-class="pagination pagination-sm pull-right"
+                    ul-class="pagination pagination-sm pull-right pagination-dhf"
                     show-prev-next="true"
                     paging-action="doSearch(page)">
                     </paging>
@@ -85,7 +80,7 @@
                             <li class="list-group-item">
                                 <div class="checkbox">
                                     <label class="text-light-blue">
-                                        <input id="{{ provider._source.bid}}" class="checkbox" type="checkbox" value="{{provider._source.bid}}" ng-checked="selection.indexOf(provider._source.bid) > -1" ng-click="toggleSelection(provider._source.bid)" /> Add to Compare
+                                        <input id="{{ provider._source.nationalproviderid}}" class="checkbox" type="checkbox" value="{{provider._source.nationalproviderid}}" ng-checked="selection.indexOf(provider._source.nationalproviderid) > -1" ng-click="toggleSelection(provider._source.nationalproviderid)" /> Add to Compare
                                     </label>
                                 </div>
                             </li>
@@ -145,7 +140,7 @@
                                 <td ng-repeat="provider in compareProviders" class="text-center">{{provider._source.gender}}</td>
                             </tr> <tr>
                             <th>Spoken Languages</th>
-                            <td ng-repeat="provider in compareProviders" class="text-center">{{provider._source.language}}</td>
+                            <td ng-repeat="provider in compareProviders" class="text-center">{{provider._source.language | addCommawithSpace }}</td>
                         </tr> <tr>
                         <th>Phone / FAX </th>
                         <td ng-repeat="provider in compareProviders" class="text-center">{{provider._source.phone}} / {{provider._source.fax}} </td>

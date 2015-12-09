@@ -86,7 +86,7 @@ class ProfileController extends Controller
         });
 
         $lexer->parse(storage_path() . '/source_dir/MDM_COMMERCIALFULL-20150730112521.csv', $interpreter);
-        return \Response::json(array('error' => false, 'response' => $response), 200);
+        return \Response::json(array('error' => false, 'response' => $response), 200, array(), JSON_PRETTY_PRINT);
     }
 
     /**
@@ -109,9 +109,9 @@ class ProfileController extends Controller
         $this->push_into_queue($queue_message);
         $response['profile'][] = array('id' => $user->id, 'status' => 'success');
         if ($user->count() <= 0) {
-            return \Response::json(array('error' => true, 'response' => array('error' => true, 'message' => 'profile not found.')), 404);
+            return \Response::json(array('error' => true, 'response' => array('error' => true, 'message' => 'profile not found.')), 404, array(), JSON_PRETTY_PRINT);
         }
-        return \Response::json(array('error' => false, 'response' => $response), 200);
+        return \Response::json(array('error' => false, 'response' => $response), 200, array(), JSON_PRETTY_PRINT);
     }
 
     /**
@@ -124,13 +124,13 @@ class ProfileController extends Controller
         $params['id'] = $id;
         $is_exists = \Es::exists($params);
         if (!$is_exists) {
-            return \Response::json(array('error' => true, 'response' => $is_exists), 404);
+            return \Response::json(array('error' => true, 'response' => $is_exists), 404, array(), JSON_PRETTY_PRINT);
         }
         $input = json_decode(\Input::get('data', '{}'), TRUE);
         $queue_message['action'] = ProfileHelper::QUEUE_METHOD_POST;
         $queue_message['data'] = array('id' => $id, 'body' => $input);
         $this->push_into_queue($queue_message);
-        return \Response::json(ProfileHelper::get_success_response(), 200);
+        return \Response::json(ProfileHelper::get_success_response(), 200, array(), JSON_PRETTY_PRINT);
     }
 
     public function rebuild_index() {
@@ -144,11 +144,11 @@ class ProfileController extends Controller
         $params['id'] = $id;
         $is_exists = \Es::exists($params);
         if (!$is_exists) {
-            return \Response::json(array('error' => true, 'response' => $is_exists), 404);
+            return \Response::json(array('error' => true, 'response' => $is_exists), 404, array(), JSON_PRETTY_PRINT);
         }
         $params['_source'] = TRUE;
         $results = \Es::get($params);
-        return \Response::json(array('error' => false, 'response' => array_get($results, '_source')), 200);
+        return \Response::json(array('error' => false, 'response' => array_get($results, '_source')), 200, array(), JSON_PRETTY_PRINT);
     }
 
     /**
@@ -160,7 +160,7 @@ class ProfileController extends Controller
         $q = \Input::get('q', '');
         $size = (int)\Input::get('size', 10);
         $skip = (int)\Input::get('skip', 0);
-        $fields = \Input::get('fields', 'bid,type,network,firstname,lastname,name,phone,county,city,address1,address2,state,zip,zip4,phone,degree,language,mi,state,gender,omt1,omt2,specialties,location,group_name');
+        $fields = \Input::get('fields', 'bid,type,network,firstname,lastname,name,phone,county,city,address1,address2,state,zip,zip4,phone,degree,language,mi,state,gender,omt1,omt2,specialties,location,group_name,nationalproviderid');
         $zip = \Input::get('zip', 0);
         $radius = (int)\Input::get('radius', 10);
         $params = ProfileHelper::get_elastic_config();
@@ -198,9 +198,9 @@ class ProfileController extends Controller
         }
 
         if ($count <= 0) {
-            return \Response::json(array('error' => true, 'response' => array('error' => true, 'message' => 'profile not found.'), 'query' => $params), 200);
+            return \Response::json(array('error' => true, 'response' => array('error' => true, 'message' => 'profile not found.'), 'query' => $params), 200, array(), JSON_PRETTY_PRINT);
         }
-        return \Response::json(array('error' => false, 'response' => $results['hits']), 200);
+        return \Response::json(array('error' => false, 'response' => $results['hits']), 200, array(), JSON_PRETTY_PRINT);
     }
 
     public function suggest() {
@@ -211,7 +211,7 @@ class ProfileController extends Controller
         $params['body']['did-you-mean'] = array('text' => $q, "phrase" => array('size' => 5, "field" => $field, "real_word_error_likelihood" => 0.50, "max_errors" => 1.0, "gram_size" => 3));
         $results = \Es::suggest($params);
         $suggestons = array_get($results, 'did-you-mean.0.options', 0);
-        return \Response::json(array('error' => false, 'response' => $suggestons), 200);
+        return \Response::json(array('error' => false, 'response' => $suggestons), 200, array(), JSON_PRETTY_PRINT);
     }
 
     /**
@@ -223,7 +223,7 @@ class ProfileController extends Controller
         $queue_message['action'] = ProfileHelper::QUEUE_METHOD_DELETE;
         $queue_message['data'] = array('id' => $id);
         $this->push_into_queue($queue_message);
-        return \Response::json(ProfileHelper::get_success_response(), 200);
+        return \Response::json(ProfileHelper::get_success_response(), 200, array(), JSON_PRETTY_PRINT);
     }
 
     public function facets() {
@@ -254,9 +254,9 @@ class ProfileController extends Controller
         $results = \Es::search($params);
         $count = array_get($results, 'hits.total', 0);
         if ($count <= 0) {
-            return \Response::json(array('error' => true, 'response' => array('error' => true, 'message' => 'profile not found.')), 404);
+            return \Response::json(array('error' => true, 'response' => array('error' => true, 'message' => 'profile not found.')), 404, array(), JSON_PRETTY_PRINT);
         }
-        return \Response::json(array('error' => false, 'response' => $results['facets']), 200);
+        return \Response::json(array('error' => false, 'response' => $results['facets']), 200, array(), JSON_PRETTY_PRINT);
     }
 
     public function push_into_queue($profile_params) {
